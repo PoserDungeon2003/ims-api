@@ -3,7 +3,7 @@ import {Credentials} from '@loopback/authentication-jwt';
 import { /* inject, */ BindingScope, injectable, service} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
-import {UserProfile} from '@loopback/security';
+import {UserProfile, securityId} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import log4js from 'log4js';
 import {Users} from '../models';
@@ -48,7 +48,10 @@ export class UserService implements BaseUserService<Users, Credentials> {
     return foundUser
   }
   convertToUserProfile(user: Users): UserProfile {
-    throw new Error('Method not implemented.');
+    return {
+      [securityId]: user.id?.toString() ?? '',
+      email: user.email,
+    }
   }
 
   async createUser(userParams: Users): Promise<{success: number, message?: string}> {
@@ -64,8 +67,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
         username: userParams.username.toLowerCase(),
         fullName: userParams.fullName,
         phone: userParams.phone,
-        password: await this.passwordHasher.hashPassword(userParams.password),
-        rolesId: userParams.rolesId
+        password: await this.passwordHasher.hashPassword(userParams.password)
       })
       return {success: 1}
     }

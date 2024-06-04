@@ -1,3 +1,4 @@
+import {Credentials} from '@loopback/authentication-jwt';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -18,6 +19,8 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {CredentialsRequestBody} from '../common/models/request';
+import {LoginRS} from '../common/models/response';
 import {Users} from '../models';
 import {UsersRepository} from '../repositories';
 import {UserService} from '../services';
@@ -51,6 +54,33 @@ export class UserController {
       return await this.userService.createUser(users);
     } catch (error) {
       throw error;
+    }
+  }
+
+  @post('/users/login')
+  @response(200, {
+    responses: {
+      '200': {
+        description: 'Login request',
+        content: {
+          'application/json': {
+            schema: getModelSchemaRef(LoginRS),
+          },
+        },
+      },
+    },
+  })
+  async login(
+    @requestBody(CredentialsRequestBody) credentials: Credentials,
+  ): Promise<LoginRS> {
+    const user = await this.userService.verifyCredentials(credentials);
+
+    const userProfile = this.userService.convertToUserProfile(user);
+
+    return {
+      email: userProfile.email || '',
+      id: String(user.id),
+      name: user.fullName,
     }
   }
 
