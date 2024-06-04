@@ -1,3 +1,5 @@
 export * from './ping.controller';
-export * from './users-roles.controller';
-export * from './roles-permissions.controller';
+export * from './roles.controller';
+export * from './user.controller';
+
+export * from './usertest.controller';
