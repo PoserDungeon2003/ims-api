@@ -10,7 +10,7 @@ export class Roles extends Entity {
     id: true,
     generated: true,
   })
-  rolesId?: number;
+  id?: number;
 
   @property({
     type: 'string',

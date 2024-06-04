@@ -7,7 +7,7 @@ import {UserProfile} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import log4js from 'log4js';
 import {Users} from '../models';
-import {UsersRepository} from '../repositories';
+import {RolesRepository, UsersRepository} from '../repositories';
 import {PasswordHashService} from './password-hash.service';
 
 const logger = log4js.getLogger('user.controller')
@@ -17,6 +17,7 @@ logger.level = 'debug'
 export class UserService implements BaseUserService<Users, Credentials> {
   constructor(
     @repository(UsersRepository) private userRepository: UsersRepository,
+    @repository(RolesRepository) private rolesRepository: RolesRepository,
     @service(PasswordHashService) private passwordHasher: PasswordHashService,
   ) { }
   async verifyCredentials(credentials: Credentials): Promise<Users> {
@@ -31,7 +32,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
       throw new HttpErrors.Unauthorized(JSON.stringify({message: invalidUserNameError}))
     }
 
-    const credentialsFound = await this.userRepository.findById(foundUser.usersId)
+    const credentialsFound = await this.userRepository.findById(foundUser.id)
     if (!credentialsFound) {
       throw new HttpErrors.Unauthorized(JSON.stringify({message: invalidUserNameError}))
     }
@@ -58,7 +59,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
     })
 
     if (!user) {
-      user = await this.userRepository.create({
+      user = await this.rolesRepository.users(userParams.rolesId).create({
         email: userParams.email.toLowerCase(),
         username: userParams.username.toLowerCase(),
         fullName: userParams.fullName,
