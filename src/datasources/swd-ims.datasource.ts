@@ -4,11 +4,11 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'swd_ims',
   connector: 'postgresql',
-  url: 'postgresql://localhost',
+  url: '',
   host: 'localhost',
   port: 5432,
   user: 'postgres',
-  password: '',
+  password: 'postgres',
   database: 'swd_ims'
 };
 
