@@ -67,7 +67,8 @@ export class UserService implements BaseUserService<Users, Credentials> {
         username: userParams.username.toLowerCase(),
         fullName: userParams.fullName,
         phone: userParams.phone,
-        password: await this.passwordHasher.hashPassword(userParams.password)
+        password: await this.passwordHasher.hashPassword(userParams.password),
+        rolesId: userParams.rolesId
       })
       return {success: 1}
     }
