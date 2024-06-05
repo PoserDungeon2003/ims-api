@@ -10,6 +10,10 @@ export async function migrate(args: string[]) {
     existingSchema, models: [
       'Roles',
       'Users',
+      'Intern',
+      'Tasks',
+      'TrainingProgram',
+      'WorkResult'
     ]
   });
 

@@ -1,5 +1,6 @@
-import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, model, property, hasMany} from '@loopback/repository';
 import {Roles} from './roles.model';
+import {Intern} from './intern.model';
 
 @model({
   settings: {
@@ -55,6 +56,9 @@ export class Users extends Entity {
 
   @belongsTo(() => Roles)
   rolesId: number;
+
+  @hasMany(() => Intern, {keyTo: 'mentorId'})
+  interns: Intern[];
 
   constructor(data?: Partial<Users>) {
     super(data);
