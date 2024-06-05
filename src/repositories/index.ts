@@ -1,5 +1,9 @@
-export * from './permissions.repository';
-export * from './role-permissions.repository';
 export * from './roles.repository';
 export * from './users.repository';
 
+export * from './feedback.repository';
+export * from './intern-task.repository';
+export * from './intern.repository';
+export * from './tasks.repository';
+export * from './training-program.repository';
+export * from './work-result.repository';

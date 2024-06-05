@@ -9,6 +9,8 @@ import {Roles} from './roles.model';
         entity: 'Roles',
         entityKey: 'id',
         foreignKey: 'rolesid',
+        onDelete: 'CASCADE',
+        onUpdate: 'SET NULL'
       },
     },
   },

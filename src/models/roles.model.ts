@@ -1,9 +1,16 @@
 import {Entity, hasMany, model, property} from '@loopback/repository';
-import {Permissions} from './permissions.model';
-import {RolePermissions} from './role-permissions.model';
 import {Users} from './users.model';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_roles_roleId: {
+        name: 'fk_roles_roleId',
+        onDelete: 'CASCADE',
+      },
+    },
+  }
+})
 export class Roles extends Entity {
   @property({
     type: 'number',
@@ -25,9 +32,6 @@ export class Roles extends Entity {
 
   @hasMany(() => Users)
   users: Users[];
-
-  @hasMany(() => Permissions, {through: {model: () => RolePermissions}})
-  permissions: Permissions[];
 
   constructor(data?: Partial<Roles>) {
     super(data);
