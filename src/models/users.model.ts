@@ -1,7 +1,18 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Roles} from './roles.model';
 
-@model()
+@model({
+  settings: {
+    foreignKeys: {
+      fk_roles_roleId: {
+        name: 'fk_roles_roleId',
+        entity: 'Roles',
+        entityKey: 'id',
+        foreignKey: 'rolesid',
+      },
+    },
+  },
+})
 export class Users extends Entity {
   @property({
     type: 'number',

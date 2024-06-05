@@ -23,11 +23,11 @@ export class Roles extends Entity {
   })
   description?: string;
 
-  @hasMany(() => Permissions, {through: {model: () => RolePermissions}})
-  permissions: Permissions[];
-
   @hasMany(() => Users)
   users: Users[];
+
+  @hasMany(() => Permissions, {through: {model: () => RolePermissions}})
+  permissions: Permissions[];
 
   constructor(data?: Partial<Roles>) {
     super(data);

@@ -7,7 +7,7 @@ export class Permissions extends Entity {
     id: true,
     generated: true,
   })
-  permissionsId?: number;
+  id?: number;
 
   @property({
     type: 'string',

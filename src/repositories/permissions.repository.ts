@@ -5,7 +5,7 @@ import {Permissions, PermissionsRelations} from '../models';
 
 export class PermissionsRepository extends DefaultCrudRepository<
   Permissions,
-  typeof Permissions.prototype.permissionsId,
+  typeof Permissions.prototype.id,
   PermissionsRelations
 > {
   constructor(
