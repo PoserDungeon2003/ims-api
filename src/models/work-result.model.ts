@@ -20,6 +20,15 @@ export class WorkResult extends Entity {
   })
   note?: string;
 
+  @property({
+    type: 'number',
+  })
+  internId?: number;
+
+  @property({
+    type: 'number',
+  })
+  trainingProgramId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
