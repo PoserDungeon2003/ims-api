@@ -1,5 +1,7 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
 import {Users} from './users.model';
+import {Tasks} from './tasks.model';
+import {InternTask} from './intern-task.model';
 
 @model({settings: {strict: false}})
 export class Intern extends Entity {
@@ -47,6 +49,9 @@ export class Intern extends Entity {
 
   @belongsTo(() => Users)
   mentorId: number;
+
+  @hasMany(() => Tasks, {through: {model: () => InternTask}})
+  tasks: Tasks[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

@@ -15,6 +15,15 @@ export class InternTask extends Entity {
   })
   isCompleted: boolean;
 
+  @property({
+    type: 'number',
+  })
+  internId?: number;
+
+  @property({
+    type: 'number',
+  })
+  tasksId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
