@@ -1,4 +1,5 @@
-import {Entity, model, property} from '@loopback/repository';
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {JobPosition} from './job-position.model';
 
 @model()
 export class Application extends Entity {
@@ -50,6 +51,8 @@ export class Application extends Entity {
   })
   status?: 'pending' | 'accepted' | 'rejected';
 
+  @belongsTo(() => JobPosition)
+  jobPositionId: number;
 
   constructor(data?: Partial<Application>) {
     super(data);

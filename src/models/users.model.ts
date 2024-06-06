@@ -1,6 +1,8 @@
 import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Intern} from './intern.model';
 import {Roles} from './roles.model';
+import {Interview} from './interview.model';
+import {JobPosition} from './job-position.model';
 
 @model({
   settings: {
@@ -59,6 +61,12 @@ export class Users extends Entity {
 
   @hasMany(() => Intern, {keyTo: 'mentorId'})
   interns: Intern[];
+
+  @hasMany(() => Interview, {keyTo: 'HrId'})
+  interviews: Interview[];
+
+  @hasMany(() => JobPosition, {keyTo: 'hrId'})
+  jobPositions: JobPosition[];
 
   constructor(data?: Partial<Users>) {
     super(data);
