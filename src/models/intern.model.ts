@@ -1,11 +1,11 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
-import {Users} from './users.model';
-import {Tasks} from './tasks.model';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {InternTask} from './intern-task.model';
+import {Tasks} from './tasks.model';
 import {TrainingProgram} from './training-program.model';
+import {Users} from './users.model';
 import {WorkResult} from './work-result.model';
 
-@model({settings: {strict: false}})
+@model()
 export class Intern extends Entity {
   @property({
     type: 'number',

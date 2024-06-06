@@ -1,19 +1,19 @@
-import {belongsTo, Entity, model, property, hasMany} from '@loopback/repository';
-import {Roles} from './roles.model';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Intern} from './intern.model';
+import {Roles} from './roles.model';
 
 @model({
   settings: {
-    foreignKeys: {
-      fk_roles_roleId: {
-        name: 'fk_roles_roleId',
-        entity: 'Roles',
-        entityKey: 'id',
-        foreignKey: 'rolesid',
-        onDelete: 'CASCADE',
-        onUpdate: 'SET NULL'
-      },
-    },
+    // foreignKeys: {
+    //   fk_roles_roleId: {
+    //     name: 'fk_roles_roleId',
+    //     entity: 'Roles',
+    //     entityKey: 'id',
+    //     foreignKey: 'rolesid',
+    //     onDelete: 'CASCADE',
+    //     onUpdate: 'SET NULL'
+    //   },
+    // },
   },
 })
 export class Users extends Entity {

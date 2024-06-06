@@ -1,6 +1,6 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model({settings: {strict: false}})
+@model()
 export class TrainingProgram extends Entity {
   @property({
     type: 'number',
@@ -11,14 +11,15 @@ export class TrainingProgram extends Entity {
 
   @property({
     type: 'date',
-    required: true,
+    defaultFn: 'now',
   })
-  createdOn: string;
+  createdOn?: Date;
 
   @property({
     type: 'date',
+    defaultFn: 'now',
   })
-  updatedOn?: string;
+  updatedOn?: Date;
 
   @property({
     type: 'string',

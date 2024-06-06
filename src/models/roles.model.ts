@@ -3,12 +3,12 @@ import {Users} from './users.model';
 
 @model({
   settings: {
-    foreignKeys: {
-      fk_roles_roleId: {
-        name: 'fk_roles_roleId',
-        onDelete: 'CASCADE',
-      },
-    },
+    // foreignKeys: {
+    //   fk_roles_roleId: {
+    //     name: 'fk_roles_roleId',
+    //     onDelete: 'CASCADE',
+    //   },
+    // },
   }
 })
 export class Roles extends Entity {
