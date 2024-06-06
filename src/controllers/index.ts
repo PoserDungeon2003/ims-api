@@ -1,12 +1,4 @@
+export * from './intern.controller';
 export * from './roles.controller';
 export * from './user.controller';
-export * from './users-intern.controller';
-export * from './intern-users.controller';
-export * from './intern-tasks.controller';
-export * from './intern-training-program.controller';
-export * from './users-interview.controller';
-export * from './interview-users.controller';
-export * from './users-job-position.controller';
-export * from './job-position-users.controller';
-export * from './job-position-application.controller';
-export * from './application-job-position.controller';
+

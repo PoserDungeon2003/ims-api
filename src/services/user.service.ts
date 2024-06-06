@@ -62,15 +62,23 @@ export class UserService implements BaseUserService<Users, Credentials> {
     })
 
     if (!user) {
-      user = await this.rolesRepository.users(userParams.rolesId).create({
-        email: userParams.email.toLowerCase(),
-        username: userParams.username.toLowerCase(),
-        fullName: userParams.fullName,
-        phone: userParams.phone,
-        password: await this.passwordHasher.hashPassword(userParams.password),
-        rolesId: userParams.rolesId
-      })
-      return {success: 1}
+      let role = await this.rolesRepository.exists(userParams.rolesId)
+      if (!role) {
+        throw new HttpErrors[404]('Role not found')
+      }
+      try {
+        user = await this.userRepository.create({
+          email: userParams.email.toLowerCase(),
+          username: userParams.username.toLowerCase(),
+          fullName: userParams.fullName,
+          phone: userParams.phone,
+          password: await this.passwordHasher.hashPassword(userParams.password),
+          rolesId: userParams.rolesId
+        })
+        return {success: 1}
+      } catch (error) {
+        throw new HttpErrors[500]('Create user failed')
+      }
     }
 
     return {success: 0, message: 'This email has been used'}
