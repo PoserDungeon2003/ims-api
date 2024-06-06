@@ -7,14 +7,7 @@ export async function migrate(args: string[]) {
   const app = new ImsApiApplication();
   await app.boot();
   await app.migrateSchema({
-    existingSchema, models: [
-      'Roles',
-      'Users',
-      'Intern',
-      'Tasks',
-      'TrainingProgram',
-      'WorkResult'
-    ]
+    existingSchema
   });
 
   // Connectors usually keep a pool of opened connections,
