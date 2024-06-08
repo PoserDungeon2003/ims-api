@@ -1,0 +1,6 @@
+- name: HR Manager
+  description: Responsible for managing HR activities
+- name: Coordinator
+  description: Coordinates various activities and tasks
+- name: Mentor
+  description: Provides guidance and mentorship to team members
