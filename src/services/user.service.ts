@@ -6,6 +6,7 @@ import {HttpErrors} from '@loopback/rest';
 import {UserProfile, securityId} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import log4js from 'log4js';
+import {BaseReponse} from '../common/models/response';
 import {Users} from '../models';
 import {RolesRepository, UsersRepository} from '../repositories';
 import {PasswordHashService} from './password-hash.service';
@@ -54,7 +55,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
     }
   }
 
-  async createUser(userParams: Users): Promise<{success: number, message?: string}> {
+  async createUser(userParams: Users): Promise<BaseReponse> {
     logger.debug('userParams', userParams)
 
     let user = await this.userRepository.findOne({

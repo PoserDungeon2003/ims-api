@@ -1,8 +1,8 @@
 import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {Intern} from './intern.model';
-import {Roles} from './roles.model';
 import {Interview} from './interview.model';
 import {JobPosition} from './job-position.model';
+import {Roles} from './roles.model';
 
 @model({
   settings: {

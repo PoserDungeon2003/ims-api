@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -7,44 +8,48 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
+import {CreateInternRQ} from '../common/models/request';
+import {BaseReponse} from '../common/models/response';
 import {Intern} from '../models';
 import {InternRepository} from '../repositories';
+import {InternService} from '../services';
 
 export class InternController {
   constructor(
     @repository(InternRepository)
-    public internRepository : InternRepository,
-  ) {}
+    public internRepository: InternRepository,
+    @service(InternService)
+    private internService: InternService,
+  ) { }
 
   @post('/intern')
   @response(200, {
     description: 'Intern model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Intern)}},
+    content: {'application/json': {schema: getModelSchemaRef(CreateInternRQ)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Intern, {
+          schema: getModelSchemaRef(CreateInternRQ, {
             title: 'NewIntern',
-            exclude: ['id'],
           }),
         },
       },
     })
-    intern: Omit<Intern, 'id'>,
-  ): Promise<Intern> {
-    return this.internRepository.create(intern);
+    intern: Omit<CreateInternRQ, 'id'>,
+  ): Promise<BaseReponse> {
+    return this.internService.createIntern(intern);
   }
 
   @get('/intern/count')

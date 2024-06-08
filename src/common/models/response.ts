@@ -1,5 +1,11 @@
 import {model, property} from '@loopback/repository'
 
+export type BaseReponse = {
+  message?: string
+  object?: any
+  success: number
+}
+
 @model({})
 export class LoginRS {
   @property(String)

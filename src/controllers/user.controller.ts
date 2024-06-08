@@ -20,7 +20,7 @@ import {
   response,
 } from '@loopback/rest';
 import {CredentialsRequestBody} from '../common/models/request';
-import {LoginRS} from '../common/models/response';
+import {BaseReponse, LoginRS} from '../common/models/response';
 import {Users} from '../models';
 import {UsersRepository} from '../repositories';
 import {UserService} from '../services';
@@ -49,7 +49,7 @@ export class UserController {
         },
       },
     }) users: Omit<Users, 'usersId'>,
-  ): Promise<{success: number; message?: string}> {
+  ): Promise<BaseReponse> {
     try {
       return await this.userService.createUser(users);
     } catch (error) {

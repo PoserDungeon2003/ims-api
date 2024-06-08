@@ -1,3 +1,4 @@
+import {model, property} from '@loopback/repository';
 import {SchemaObject} from '@loopback/rest';
 
 const CredentialsSchema: SchemaObject = {
@@ -28,4 +29,42 @@ export type CreateUserRQ = {
   username: string,
   password: string,
   phone: number
+}
+
+@model()
+export class CreateInternRQ {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  fullName: string
+  @property({
+    type: 'string',
+    required: true,
+  })
+  email: string
+  @property({
+    type: 'number',
+    required: true,
+  })
+  phone: number
+  @property({
+    type: 'string',
+    required: true,
+  })
+  University: string
+  @property({
+    type: 'string',
+    required: true,
+  })
+  major: string
+  @property({
+    type: 'string',
+  })
+  experiences?: string
+  @property({
+    type: 'string',
+    required: true,
+  })
+  mentorName: string
 }
