@@ -3,7 +3,7 @@ import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {CreateInternRQ} from '../common/models/request';
 import {BaseReponse} from '../common/models/response';
-import {InternRepository, UsersRepository} from '../repositories';
+import {InternRepository, RolesRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class InternService {
@@ -12,6 +12,8 @@ export class InternService {
     private internRepository: InternRepository,
     @repository(UsersRepository)
     private usersRepository: UsersRepository,
+    @repository(RolesRepository)
+    private rolesRepository: RolesRepository
   ) { }
 
   async createIntern(intern: CreateInternRQ): Promise<BaseReponse> {
@@ -20,9 +22,18 @@ export class InternService {
         fullName: intern.mentorName
       }
     })
+    let role = await this.rolesRepository.findOne({
+      where: {
+        name: 'Mentor'
+      }
+    })
 
     if (!user) {
       throw new HttpErrors[404]("User not found")
+    }
+
+    if (role && user.rolesId !== role.id) {
+      throw new HttpErrors[403]("User is not mentor")
     }
 
     try {
