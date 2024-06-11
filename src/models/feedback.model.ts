@@ -1,24 +1,14 @@
 import {Entity, model, property} from '@loopback/repository';
+import {TimeStampMixin} from '../mixins';
 
 @model()
-export class Feedback extends Entity {
+export class Feedback extends TimeStampMixin(Entity) {
   @property({
     type: 'number',
     id: true,
     generated: true,
   })
   id?: number;
-
-  @property({
-    type: 'date',
-    required: true,
-  })
-  createdOn: string;
-
-  @property({
-    type: 'date',
-  })
-  updatedOn?: string;
 
   @property({
     type: 'string',

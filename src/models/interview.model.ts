@@ -1,8 +1,9 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {TimeStampMixin} from '../mixins';
 import {Users} from './users.model';
 
 @model()
-export class Interview extends Entity {
+export class Interview extends TimeStampMixin(Entity) {
   @property({
     type: 'number',
     id: true,
@@ -36,17 +37,6 @@ export class Interview extends Entity {
     default: 'pending',
   })
   status?: 'pending' | 'accepted' | 'rejected';
-
-  @property({
-    type: 'date',
-    defaultFn: 'now',
-  })
-  createdOn?: Date;
-
-  @property({
-    type: 'date',
-  })
-  updatedOn?: Date;
 
   @belongsTo(() => Users)
   HrId: number;
