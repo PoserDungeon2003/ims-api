@@ -41,6 +41,11 @@ export class Interview extends TimeStampMixin(Entity) {
   @belongsTo(() => Users)
   HrId: number;
 
+  @property({
+    type: 'number',
+  })
+  applicantId?: number;
+
   constructor(data?: Partial<Interview>) {
     super(data);
   }

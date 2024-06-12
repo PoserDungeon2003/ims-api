@@ -4,6 +4,7 @@ import {Tasks} from './tasks.model';
 import {TrainingProgram} from './training-program.model';
 import {Users} from './users.model';
 import {WorkResult} from './work-result.model';
+import {Feedback} from './feedback.model';
 
 @model()
 export class Intern extends Entity {
@@ -57,6 +58,9 @@ export class Intern extends Entity {
 
   @hasMany(() => TrainingProgram, {through: {model: () => WorkResult}})
   trainingPrograms: TrainingProgram[];
+
+  @hasMany(() => Feedback)
+  feedbacks: Feedback[];
   // Define well-known properties here
 
   // Indexer property to allow additional data

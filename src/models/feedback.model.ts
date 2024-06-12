@@ -22,6 +22,20 @@ export class Feedback extends TimeStampMixin(Entity) {
   })
   rating: number;
 
+  @property({
+    type: 'number',
+  })
+  internId?: number;
+
+  @property({
+    type: 'number',
+  })
+  mentorId?: number;
+
+  @property({
+    type: 'number',
+  })
+  trainingProgramId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data

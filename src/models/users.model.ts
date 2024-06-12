@@ -3,6 +3,8 @@ import {Intern} from './intern.model';
 import {Interview} from './interview.model';
 import {JobPosition} from './job-position.model';
 import {Roles} from './roles.model';
+import {Tasks} from './tasks.model';
+import {Feedback} from './feedback.model';
 
 @model({
   settings: {
@@ -67,6 +69,12 @@ export class Users extends Entity {
 
   @hasMany(() => JobPosition, {keyTo: 'hrId'})
   jobPositions: JobPosition[];
+
+  @hasMany(() => Tasks, {keyTo: 'mentorId'})
+  tasks: Tasks[];
+
+  @hasMany(() => Feedback, {keyTo: 'mentorId'})
+  feedbacks: Feedback[];
 
   constructor(data?: Partial<Users>) {
     super(data);

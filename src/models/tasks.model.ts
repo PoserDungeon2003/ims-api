@@ -21,6 +21,15 @@ export class Tasks extends Entity {
   })
   name: string;
 
+  @property({
+    type: 'number',
+  })
+  mentorId?: number;
+
+  @property({
+    type: 'number',
+  })
+  trainingProgramId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
