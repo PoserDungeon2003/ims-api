@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -7,24 +8,29 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
+import {CreateTasksRQ} from '../common/models/request';
+import {BaseReponse} from '../common/models/response';
 import {Tasks} from '../models';
 import {TasksRepository} from '../repositories';
+import {TaskService} from '../services';
 
 export class TaskController {
   constructor(
     @repository(TasksRepository)
-    public tasksRepository : TasksRepository,
-  ) {}
+    public tasksRepository: TasksRepository,
+    @service(TaskService)
+    private taskService: TaskService
+  ) { }
 
   @post('/tasks')
   @response(200, {
@@ -35,16 +41,15 @@ export class TaskController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Tasks, {
+          schema: getModelSchemaRef(CreateTasksRQ, {
             title: 'NewTasks',
-            exclude: ['y'],
           }),
         },
       },
     })
-    tasks: Omit<Tasks, 'y'>,
-  ): Promise<Tasks> {
-    return this.tasksRepository.create(tasks);
+    tasks: Omit<CreateTasksRQ, 'y'>,
+  ): Promise<BaseReponse> {
+    return this.taskService.createTasks(tasks);
   }
 
   @get('/tasks/count')

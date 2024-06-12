@@ -10,6 +10,8 @@ export default async function (app: ImsApiApplication) {
   let rows = yaml.load(content) as any;
 
   for (let row of rows) {
+    console.log(row);
+
     let role = await roleRepository.findOne({where: {name: row.name}});
     if (role) {
       await roleRepository.updateById(role.id, row);

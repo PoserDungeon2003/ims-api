@@ -1,0 +1,75 @@
+import { /* inject, */ BindingScope, injectable} from '@loopback/core';
+import {repository} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
+import {CreateTasksRQ} from '../common/models/request';
+import {BaseReponse} from '../common/models/response';
+import {RolesRepository, TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
+
+@injectable({scope: BindingScope.TRANSIENT})
+export class TaskService {
+  constructor(
+    @repository(TasksRepository)
+    private tasksRepository: TasksRepository,
+    @repository(UsersRepository)
+    private usersRepository: UsersRepository,
+    @repository(TrainingProgramRepository)
+    private trainingProgramRepository: TrainingProgramRepository,
+    @repository(RolesRepository)
+    private rolesRepository: RolesRepository
+  ) { }
+
+  async createTasks(task: CreateTasksRQ): Promise<BaseReponse> {
+    let trainingProgram = await this.trainingProgramRepository.findOne({
+      where: {
+        code: task.trainingProgramCode
+      }
+    })
+
+    let role = await this.rolesRepository.findOne({
+      where: {
+        name: 'Mentor'
+      }
+    })
+
+    if (!trainingProgram) {
+      return {
+        success: 0,
+        message: "Training program not found"
+      }
+    }
+
+    let mentor = await this.usersRepository.findOne({
+      where: {
+        fullName: task.mentorName
+      }
+    })
+
+    if (role && role.id !== mentor?.rolesId) {
+      return {
+        success: 0,
+        message: "User is not mentor"
+      }
+    }
+
+    try {
+      let response = await this.tasksRepository.create({
+        name: task.name,
+        description: task.description,
+        trainingProgramId: trainingProgram.id,
+        mentorId: mentor?.id
+      })
+      if (response) {
+        return {
+          success: 1,
+          message: "Create task successful"
+        }
+      }
+      return {
+        success: 0,
+        message: "Create task failed"
+      }
+    } catch (error) {
+      throw new HttpErrors[500]("Internal server error")
+    }
+  }
+}

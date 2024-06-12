@@ -68,3 +68,27 @@ export class CreateInternRQ {
   })
   mentorName: string
 }
+
+@model()
+export class CreateTasksRQ {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  name: string
+  @property({
+    type: 'string',
+    required: true,
+  })
+  description: string
+  @property({
+    type: 'string',
+    required: true,
+  })
+  trainingProgramCode: string
+  @property({
+    type: 'string',
+    required: true,
+  })
+  mentorName: string
+}

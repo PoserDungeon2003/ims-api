@@ -1,7 +1,7 @@
-import {Entity, model, property, hasMany} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {TimeStampMixin} from '../mixins';
-import {Tasks} from './tasks.model';
 import {Feedback} from './feedback.model';
+import {Tasks} from './tasks.model';
 
 @model()
 export class TrainingProgram extends TimeStampMixin(Entity) {
@@ -23,6 +23,12 @@ export class TrainingProgram extends TimeStampMixin(Entity) {
     required: true,
   })
   content: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  code: string;
 
   @hasMany(() => Tasks)
   tasks: Tasks[];
