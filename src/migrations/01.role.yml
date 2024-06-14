@@ -7,3 +7,6 @@
 - id: 3
   name: Mentor
   description: Provides guidance and mentorship to team members
+- id: 4
+  name: Admin
+  description: Has administrative privileges and manages system settings

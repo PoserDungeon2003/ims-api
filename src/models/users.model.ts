@@ -1,13 +1,24 @@
 import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {Feedback} from './feedback.model';
 import {Intern} from './intern.model';
 import {Interview} from './interview.model';
 import {JobPosition} from './job-position.model';
 import {Roles} from './roles.model';
 import {Tasks} from './tasks.model';
-import {Feedback} from './feedback.model';
+import {TrainingProgram} from './training-program.model';
 
 @model({
   settings: {
+    indexes: {
+      users_username_idx: {
+        keys: {
+          username: 1
+        },
+        options: {
+          unique: true
+        }
+      }
+    }
     // foreignKeys: {
     //   fk_roles_roleId: {
     //     name: 'fk_roles_roleId',
@@ -75,6 +86,9 @@ export class Users extends Entity {
 
   @hasMany(() => Feedback, {keyTo: 'mentorId'})
   feedbacks: Feedback[];
+
+  @hasMany(() => TrainingProgram, {keyTo: 'coordinatorId'})
+  trainingPrograms: TrainingProgram[];
 
   constructor(data?: Partial<Users>) {
     super(data);

@@ -1,3 +1,4 @@
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -7,24 +8,27 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
 import {TrainingProgram} from '../models';
 import {TrainingProgramRepository} from '../repositories';
+import {TrainingProgramService} from '../services';
 
 export class TrainingProgramController {
   constructor(
     @repository(TrainingProgramRepository)
-    public trainingProgramRepository : TrainingProgramRepository,
-  ) {}
+    public trainingProgramRepository: TrainingProgramRepository,
+    @service(TrainingProgramService)
+    private trainingProgramService: TrainingProgramService
+  ) { }
 
   @post('/training-programs')
   @response(200, {
@@ -44,7 +48,7 @@ export class TrainingProgramController {
     })
     trainingProgram: Omit<TrainingProgram, 'id'>,
   ): Promise<TrainingProgram> {
-    return this.trainingProgramRepository.create(trainingProgram);
+    return this.trainingProgramService.createTrainingProgram(trainingProgram);
   }
 
   @get('/training-programs/count')

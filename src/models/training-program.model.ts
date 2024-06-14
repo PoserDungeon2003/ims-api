@@ -30,11 +30,21 @@ export class TrainingProgram extends TimeStampMixin(Entity) {
   })
   code: string;
 
+  @property({
+    type: 'string',
+  })
+  createdBy?: string;
+
   @hasMany(() => Tasks)
   tasks: Tasks[];
 
   @hasMany(() => Feedback)
   feedbacks: Feedback[];
+
+  @property({
+    type: 'number',
+  })
+  coordinatorId?: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data

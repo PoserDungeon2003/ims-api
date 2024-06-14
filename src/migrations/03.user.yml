@@ -1,0 +1,90 @@
+- email: john.doe@example.com
+  phone: 123456789
+  fullName: John Doe
+  username: johndoe
+  password: password1
+  rolesId: 1
+- email: jane.smith@example.com
+  phone: 234567890
+  fullName: Jane Smith
+  username: janesmith
+  password: password2
+  rolesId: 1
+- email: robert.brown@example.com
+  phone: 345678901
+  fullName: Robert Brown
+  username: robertbrown
+  password: password3
+  rolesId: 1
+- email: linda.johnson@example.com
+  phone: 456789012
+  fullName: Linda Johnson
+  username: lindajohnson
+  password: password4
+  rolesId: 1
+- email: michael.williams@example.com
+  phone: 567890123
+  fullName: Michael Williams
+  username: michaelwilliams
+  password: password5
+  rolesId: 1
+- email: david.jones@example.com
+  phone: 678901234
+  fullName: David Jones
+  username: davidjones
+  password: password6
+  rolesId: 2
+- email: susan.miller@example.com
+  phone: 789012345
+  fullName: Susan Miller
+  username: susanmiller
+  password: password7
+  rolesId: 2
+- email: james.davis@example.com
+  phone: 890123456
+  fullName: James Davis
+  username: jamesdavis
+  password: password8
+  rolesId: 2
+- email: patricia.martinez@example.com
+  phone: 901234567
+  fullName: Patricia Martinez
+  username: patriciamartinez
+  password: password9
+  rolesId: 2
+- email: charles.rodriguez@example.com
+  phone: 123456780
+  fullName: Charles Rodriguez
+  username: charlesrodriguez
+  password: password10
+  rolesId: 2
+- email: barbara.garcia@example.com
+  phone: 234567890
+  fullName: Barbara Garcia
+  username: barbaragarcia
+  password: password11
+  rolesId: 3
+- email: william.thomas@example.com
+  phone: 345678901
+  fullName: William Thomas
+  username: williamthomas
+  password: password12
+  rolesId: 3
+- email: elizabeth.hernandez@example.com
+  phone: 456789012
+  fullName: Elizabeth Hernandez
+  username: elizabethhernandez
+  password: password13
+  rolesId: 3
+- email: christopher.moore@example.com
+  phone: 567890123
+  fullName: Christopher Moore
+  username: christophermoore
+  password: password14
+  rolesId: 3
+- email: jennifer.taylor@example.com
+  phone: 678901234
+  fullName: Jennifer Taylor
+  username: jennifertaylor
+  password: password15
+  rolesId: 3
