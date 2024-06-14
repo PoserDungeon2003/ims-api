@@ -15,9 +15,8 @@ export class Roles extends Entity {
   @property({
     type: 'number',
     id: true,
-    generated: true,
   })
-  id?: number;
+  id: number;
 
   @property({
     type: 'string',

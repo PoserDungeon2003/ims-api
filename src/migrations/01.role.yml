@@ -1,6 +1,9 @@
-- name: HR Manager
+- id: 1
+  name: HR Manager
   description: Responsible for managing HR activities
-- name: Coordinator
+- id: 2
+  name: Coordinator
   description: Coordinates various activities and tasks
-- name: Mentor
+- id: 3
+  name: Mentor
   description: Provides guidance and mentorship to team members
