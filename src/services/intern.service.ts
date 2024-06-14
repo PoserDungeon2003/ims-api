@@ -1,9 +1,9 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {HttpErrors} from '@loopback/rest';
 import {CreateInternRQ} from '../common/models/request';
 import {BaseReponse} from '../common/models/response';
-import {InternRepository, RolesRepository, UsersRepository} from '../repositories';
+import {Role} from '../common/type';
+import {InternRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class InternService {
@@ -12,38 +12,50 @@ export class InternService {
     private internRepository: InternRepository,
     @repository(UsersRepository)
     private usersRepository: UsersRepository,
-    @repository(RolesRepository)
-    private rolesRepository: RolesRepository
   ) { }
 
-  async createIntern(intern: CreateInternRQ): Promise<BaseReponse> {
+  async createIntern(internRQ: CreateInternRQ): Promise<BaseReponse> {
     let user = await this.usersRepository.findOne({
       where: {
-        fullName: intern.mentorName
-      }
-    })
-    let role = await this.rolesRepository.findOne({
-      where: {
-        name: 'Mentor'
+        fullName: internRQ.mentorName
       }
     })
 
-    if (!user) {
-      throw new HttpErrors[404]("User not found")
+    let intern = await this.internRepository.findOne({
+      where: {
+        email: internRQ.email
+      }
+    });
+
+    if (intern) {
+      return {
+        success: 0,
+        message: "Duplicate email"
+      }
     }
 
-    if (role && user.rolesId !== role.id) {
-      throw new HttpErrors[403]("User is not mentor")
+    if (!user) {
+      return {
+        success: 0,
+        message: "User not found"
+      }
+    }
+
+    if (user.rolesId !== Role.Mentor) {
+      return {
+        success: 0,
+        message: "User is not mentor"
+      }
     }
 
     try {
       let result = await this.internRepository.create({
-        email: intern.email,
-        experiences: intern.experiences,
-        fullName: intern.fullName,
-        major: intern.major,
-        phone: intern.phone,
-        University: intern.University,
+        email: internRQ.email,
+        experiences: internRQ.experiences,
+        fullName: internRQ.fullName,
+        major: internRQ.major,
+        phone: internRQ.phone,
+        University: internRQ.University,
         mentorId: user.id
       })
       if (result) {
@@ -51,10 +63,7 @@ export class InternService {
       }
       return {success: 0, message: "Create intern failed"}
     } catch (error) {
-      console.log('create intern', error);
-      throw new HttpErrors[500]("Internal server error")
+      return {success: 0, message: error}
     }
-
-    // return this.internRepository.create(intern);
   }
 }

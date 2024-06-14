@@ -32,8 +32,9 @@ export class TrainingProgram extends TimeStampMixin(Entity) {
 
   @property({
     type: 'string',
+    required: true,
   })
-  createdBy?: string;
+  createdBy: string;
 
   @hasMany(() => Tasks)
   tasks: Tasks[];

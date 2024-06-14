@@ -1,6 +1,7 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
 import {ImsApiApplication} from '../application';
+import {Role} from '../common/type';
 import {TrainingProgramRepository, UsersRepository} from '../repositories';
 
 export default async function (app: ImsApiApplication) {
@@ -14,7 +15,7 @@ export default async function (app: ImsApiApplication) {
     console.log(row);
 
     let user = await usersRepository.findOne({where: {fullName: row.createdBy}});
-    if (user?.rolesId !== 2) {
+    if (user?.rolesId !== Role.Coordinator) {
       console.log('User is not coordinator')
       return
     }

@@ -18,6 +18,8 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {CreateTrainingProgramRQ} from '../common/models/request';
+import {BaseReponse} from '../common/models/response';
 import {TrainingProgram} from '../models';
 import {TrainingProgramRepository} from '../repositories';
 import {TrainingProgramService} from '../services';
@@ -33,21 +35,20 @@ export class TrainingProgramController {
   @post('/training-programs')
   @response(200, {
     description: 'TrainingProgram model instance',
-    content: {'application/json': {schema: getModelSchemaRef(TrainingProgram)}},
+    content: {'application/json': {schema: getModelSchemaRef(CreateTrainingProgramRQ)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(TrainingProgram, {
+          schema: getModelSchemaRef(CreateTrainingProgramRQ, {
             title: 'NewTrainingProgram',
-            exclude: ['id'],
           }),
         },
       },
     })
-    trainingProgram: Omit<TrainingProgram, 'id'>,
-  ): Promise<TrainingProgram> {
+    trainingProgram: CreateTrainingProgramRQ,
+  ): Promise<BaseReponse> {
     return this.trainingProgramService.createTrainingProgram(trainingProgram);
   }
 
