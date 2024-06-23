@@ -72,7 +72,7 @@ export class Users extends Entity {
   @belongsTo(() => Roles)
   rolesId: number;
 
-  @hasMany(() => Intern, {keyTo: 'mentorId'})
+  @hasMany(() => Intern)
   interns: Intern[];
 
   @hasMany(() => Interview, {keyTo: 'HrId'})

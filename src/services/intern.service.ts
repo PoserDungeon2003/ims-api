@@ -56,7 +56,7 @@ export class InternService {
         major: internRQ.major,
         phone: internRQ.phone,
         University: internRQ.University,
-        mentorId: user.id
+        usersId: user.id
       })
       if (result) {
         return {success: 1}

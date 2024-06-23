@@ -1,10 +1,10 @@
-import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property, belongsTo} from '@loopback/repository';
+import {Feedback} from './feedback.model';
 import {InternTask} from './intern-task.model';
 import {Tasks} from './tasks.model';
 import {TrainingProgram} from './training-program.model';
-import {Users} from './users.model';
 import {WorkResult} from './work-result.model';
-import {Feedback} from './feedback.model';
+import {Users} from './users.model';
 
 @model()
 export class Intern extends Entity {
@@ -50,9 +50,6 @@ export class Intern extends Entity {
   })
   experiences?: string;
 
-  @belongsTo(() => Users)
-  mentorId: number;
-
   @hasMany(() => Tasks, {through: {model: () => InternTask}})
   tasks: Tasks[];
 
@@ -61,6 +58,9 @@ export class Intern extends Entity {
 
   @hasMany(() => Feedback)
   feedbacks: Feedback[];
+
+  @belongsTo(() => Users)
+  usersId: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
