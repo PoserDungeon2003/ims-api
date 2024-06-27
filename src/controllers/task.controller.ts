@@ -5,7 +5,7 @@ import {
   Filter,
   FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -20,16 +20,18 @@ import {
 } from '@loopback/rest';
 import {CreateTasksRQ} from '../common/models/request';
 import {BaseReponse} from '../common/models/response';
-import {Tasks} from '../models';
+import {InternTask, Tasks} from '../models';
 import {TasksRepository} from '../repositories';
-import {TaskService} from '../services';
+import {InternTaskService, TaskService} from '../services';
 
 export class TaskController {
   constructor(
     @repository(TasksRepository)
     public tasksRepository: TasksRepository,
     @service(TaskService)
-    private taskService: TaskService
+    private taskService: TaskService,
+    @service(InternTaskService)
+    private internTaskService: InternTaskService,
   ) { }
 
   @post('/tasks')
@@ -50,6 +52,26 @@ export class TaskController {
     tasks: Omit<CreateTasksRQ, 'y'>,
   ): Promise<BaseReponse> {
     return this.taskService.createTasks(tasks);
+  }
+
+  @post('/tasks/assign')
+  @response(200, {
+    description: 'Assign task to intern',
+    content: {'application/json': {schema: getModelSchemaRef(InternTask)}},
+  })
+  async assignTask(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(InternTask, {
+            title: 'AssignTask',
+          }),
+        },
+      },
+    })
+    tasks: InternTask,
+  ): Promise<BaseReponse> {
+    return await this.internTaskService.assignTask(tasks);
   }
 
   @get('/tasks/count')
