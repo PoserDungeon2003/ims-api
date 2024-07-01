@@ -1,9 +1,10 @@
-import {Entity, model, property, belongsTo, hasMany} from '@loopback/repository';
-import {JobPosition} from './job-position.model';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {TimeStampMixin} from '../mixins';
 import {Interview} from './interview.model';
+import {JobPosition} from './job-position.model';
 
 @model()
-export class Application extends Entity {
+export class Application extends TimeStampMixin(Entity) {
   @property({
     type: 'number',
     id: true,
@@ -41,10 +42,10 @@ export class Application extends Entity {
   coverLetter?: string;
 
   @property({
-    type: 'date',
-    defaultFn: 'now',
+    type: 'string',
+    required: true,
   })
-  appliedAt?: Date;
+  appliedTo: string;
 
   @property({
     type: 'string',
@@ -55,7 +56,7 @@ export class Application extends Entity {
   @belongsTo(() => JobPosition)
   jobPositionId: number;
 
-  @hasMany(() => Interview, {keyTo: 'applicantId'})
+  @hasMany(() => Interview)
   interviews: Interview[];
 
   constructor(data?: Partial<Application>) {

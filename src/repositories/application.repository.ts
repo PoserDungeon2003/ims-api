@@ -1,9 +1,9 @@
-import {inject, Getter} from '@loopback/core';
-import {DefaultCrudRepository, repository, BelongsToAccessor, HasManyRepositoryFactory} from '@loopback/repository';
+import {Getter, inject} from '@loopback/core';
+import {BelongsToAccessor, DefaultCrudRepository, repository, HasManyRepositoryFactory} from '@loopback/repository';
 import {SwdImsDataSource} from '../datasources';
 import {Application, ApplicationRelations, JobPosition, Interview} from '../models';
-import {JobPositionRepository} from './job-position.repository';
 import {InterviewRepository} from './interview.repository';
+import {JobPositionRepository} from './job-position.repository';
 
 export class ApplicationRepository extends DefaultCrudRepository<
   Application,

@@ -1,4 +1,6 @@
-import {Entity, model, property} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
+import {TrainingProgram} from './training-program.model';
+import {Users} from './users.model';
 
 @model()
 export class Tasks extends Entity {
@@ -21,15 +23,11 @@ export class Tasks extends Entity {
   })
   name: string;
 
-  @property({
-    type: 'number',
-  })
-  mentorId?: number;
+  @belongsTo(() => Users)
+  usersId: number;
 
-  @property({
-    type: 'number',
-  })
-  trainingProgramId?: number;
+  @belongsTo(() => TrainingProgram)
+  trainingProgramId: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data

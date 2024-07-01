@@ -75,16 +75,16 @@ export class Users extends Entity {
   @hasMany(() => Intern)
   interns: Intern[];
 
-  @hasMany(() => Interview, {keyTo: 'HrId'})
+  @hasMany(() => Interview)
   interviews: Interview[];
 
   @hasMany(() => JobPosition, {keyTo: 'hrId'})
   jobPositions: JobPosition[];
 
-  @hasMany(() => Tasks, {keyTo: 'mentorId'})
+  @hasMany(() => Tasks)
   tasks: Tasks[];
 
-  @hasMany(() => Feedback, {keyTo: 'mentorId'})
+  @hasMany(() => Feedback)
   feedbacks: Feedback[];
 
   @hasMany(() => TrainingProgram)

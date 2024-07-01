@@ -1,5 +1,6 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {TimeStampMixin} from '../mixins';
+import {Application} from './application.model';
 import {Users} from './users.model';
 
 @model()
@@ -10,6 +11,12 @@ export class Interview extends TimeStampMixin(Entity) {
     generated: true,
   })
   id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  intervieweeName: string;
 
   @property({
     type: 'date',
@@ -39,12 +46,10 @@ export class Interview extends TimeStampMixin(Entity) {
   status?: 'pending' | 'accepted' | 'rejected';
 
   @belongsTo(() => Users)
-  HrId: number;
+  usersId: number;
 
-  @property({
-    type: 'number',
-  })
-  applicantId?: number;
+  @belongsTo(() => Application)
+  applicationId: number;
 
   constructor(data?: Partial<Interview>) {
     super(data);
