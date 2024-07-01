@@ -87,7 +87,7 @@ export class Users extends Entity {
   @hasMany(() => Feedback, {keyTo: 'mentorId'})
   feedbacks: Feedback[];
 
-  @hasMany(() => TrainingProgram, {keyTo: 'coordinatorId'})
+  @hasMany(() => TrainingProgram)
   trainingPrograms: TrainingProgram[];
 
   constructor(data?: Partial<Users>) {

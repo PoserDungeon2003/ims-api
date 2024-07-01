@@ -1,7 +1,8 @@
-import {Entity, hasMany, model, property} from '@loopback/repository';
+import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
 import {TimeStampMixin} from '../mixins';
 import {Feedback} from './feedback.model';
 import {Tasks} from './tasks.model';
+import {Users} from './users.model';
 
 @model()
 export class TrainingProgram extends TimeStampMixin(Entity) {
@@ -42,10 +43,8 @@ export class TrainingProgram extends TimeStampMixin(Entity) {
   @hasMany(() => Feedback)
   feedbacks: Feedback[];
 
-  @property({
-    type: 'number',
-  })
-  coordinatorId?: number;
+  @belongsTo(() => Users)
+  usersId: number;
   // Define well-known properties here
 
   // Indexer property to allow additional data
