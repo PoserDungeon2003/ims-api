@@ -19,7 +19,6 @@ import {
   response,
 } from '@loopback/rest';
 import {CreateInternRQ} from '../common/models/request';
-import {BaseReponse} from '../common/models/response';
 import {Intern} from '../models';
 import {InternRepository} from '../repositories';
 import {InternService} from '../services';
@@ -48,7 +47,7 @@ export class InternController {
       },
     })
     intern: Omit<CreateInternRQ, 'id'>,
-  ): Promise<BaseReponse> {
+  ) {
     return this.internService.createIntern(intern);
   }
 

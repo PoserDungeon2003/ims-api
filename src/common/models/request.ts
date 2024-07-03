@@ -63,10 +63,10 @@ export class CreateInternRQ {
   })
   experiences?: string
   @property({
-    type: 'string',
+    type: 'number',
     required: true,
   })
-  mentorName: string
+  usersId: number
 }
 
 @model()

@@ -1,7 +1,6 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {CreateInternRQ} from '../common/models/request';
-import {BaseReponse} from '../common/models/response';
 import {Role} from '../common/type';
 import {InternRepository, UsersRepository} from '../repositories';
 
@@ -14,10 +13,10 @@ export class InternService {
     private usersRepository: UsersRepository,
   ) { }
 
-  async createIntern(internRQ: CreateInternRQ): Promise<BaseReponse> {
+  async createIntern(internRQ: CreateInternRQ) {
     let user = await this.usersRepository.findOne({
       where: {
-        fullName: internRQ.mentorName
+        id: internRQ.usersId
       }
     })
 
@@ -59,7 +58,7 @@ export class InternService {
         usersId: user.id
       })
       if (result) {
-        return {success: 1}
+        return result
       }
       return {success: 0, message: "Create intern failed"}
     } catch (error) {
