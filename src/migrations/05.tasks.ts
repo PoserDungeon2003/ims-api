@@ -15,8 +15,8 @@ export default async function (app: ImsApiApplication) {
   for (let row of rows) {
     console.log('task', row);
     let user = await usersRepository.findOne({where: {username: row.username}});
-    if (user?.rolesId !== Role.Coordinator) {
-      console.log('User is not coordinator')
+    if (user?.rolesId !== Role.Mentor) {
+      console.log('User is not mentor')
       return
     }
 
