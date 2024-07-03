@@ -1,0 +1,49 @@
+- name: Backend Development
+  description: "Experienced software engineer with a focus on backend development."
+  username: davidjones
+  trainingProgramId: TP001
+
+- name: Frontend Development
+  description: "Frontend developer with expertise in React and Vue.js."
+  username: davidjones
+  trainingProgramId: TP002
+
+- name: DevOps Engineering
+  description: "DevOps engineer skilled in CI/CD pipelines and cloud infrastructure."
+  username: susanmiller
+  trainingProgramId: TP003
+
+- name: Full-Stack Development
+  description: "Full-stack developer with a strong background in JavaScript and Node.js."
+  username: susanmiller
+  trainingProgramId: TP004
+
+- name: Software Architecture
+  description: "Software architect with a passion for scalable system design."
+  username: jamesdavis
+  trainingProgramId: TP005
+
+- name: Quality Assurance
+  description: "QA engineer specialized in automated testing and quality assurance."
+  username: jamesdavis
+  trainingProgramId: TP006
+
+- name: Mobile App Development
+  description: "Mobile app developer proficient in iOS and Android development."
+  username: patriciamartinez
+  trainingProgramId: TP007
+
+- name: Data Science
+  description: "Data scientist with expertise in machine learning and data analysis."
+  username: patriciamartinez
+  trainingProgramId: TP008
+
+- name: Cybersecurity
+  description: "Cybersecurity specialist focused on network security and threat analysis."
+  username: charlesrodriguez
+  trainingProgramId: TP009
+
+- name: Microservices Engineering
+  description: "Software engineer with a focus on microservices and containerization."
+  username: charlesrodriguez
+  trainingProgramId: TP010

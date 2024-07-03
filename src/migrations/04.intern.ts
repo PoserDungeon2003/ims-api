@@ -12,6 +12,7 @@ export default async function (app: ImsApiApplication) {
   let rows = yaml.load(content) as any;
 
   for (let row of rows) {
+    console.log('intern', row);
     let user = await usersRepository.findOne({where: {username: row.username}});
     if (user?.rolesId !== Role.Mentor) {
       console.log('User is not mentor')
@@ -19,7 +20,6 @@ export default async function (app: ImsApiApplication) {
     }
 
     let intern = await internRepository.findOne({where: {email: row.email}});
-    console.log('intern', intern);
 
     if (intern) {
       await internRepository.updateById(intern.id, {

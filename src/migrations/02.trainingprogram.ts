@@ -24,12 +24,12 @@ export default async function (app: ImsApiApplication) {
     if (trainingProgram) {
       await trainingProgramRepository.updateById(trainingProgram.id, {
         ...row,
-        coordinatorId: user.id
+        usersId: user.id
       });
     } else {
       await trainingProgramRepository.create({
         ...row,
-        coordinatorId: user.id
+        usersId: user.id
       });
     }
   }
