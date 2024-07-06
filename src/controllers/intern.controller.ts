@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -32,6 +33,7 @@ export class InternController {
   ) { }
 
   @post('/intern')
+  @authenticate('jwt')
   @response(200, {
     description: 'Intern model instance',
     content: {'application/json': {schema: getModelSchemaRef(CreateInternRQ)}},
@@ -52,6 +54,7 @@ export class InternController {
   }
 
   @get('/intern/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'Intern model count',
     content: {'application/json': {schema: CountSchema}},
@@ -63,6 +66,7 @@ export class InternController {
   }
 
   @get('/intern')
+  @authenticate('jwt')
   @response(200, {
     description: 'Array of Intern model instances',
     content: {
@@ -81,6 +85,7 @@ export class InternController {
   }
 
   @patch('/intern')
+  @authenticate('jwt')
   @response(200, {
     description: 'Intern PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -100,6 +105,7 @@ export class InternController {
   }
 
   @get('/intern/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'Intern model instance',
     content: {
@@ -116,6 +122,7 @@ export class InternController {
   }
 
   @patch('/intern/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Intern PATCH success',
   })
@@ -134,6 +141,7 @@ export class InternController {
   }
 
   @put('/intern/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Intern PUT success',
   })
@@ -145,6 +153,7 @@ export class InternController {
   }
 
   @del('/intern/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Intern DELETE success',
   })

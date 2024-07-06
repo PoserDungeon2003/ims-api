@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -27,6 +28,7 @@ export class RolesController {
   ) { }
 
   @post('/roles')
+  @authenticate('jwt')
   @response(200, {
     description: 'Roles model instance',
     content: {'application/json': {schema: getModelSchemaRef(Roles)}},
@@ -48,6 +50,7 @@ export class RolesController {
   }
 
   @get('/roles/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'Roles model count',
     content: {'application/json': {schema: CountSchema}},
@@ -59,6 +62,7 @@ export class RolesController {
   }
 
   @get('/roles')
+  @authenticate('jwt')
   @response(200, {
     description: 'Array of Roles model instances',
     content: {
@@ -77,6 +81,7 @@ export class RolesController {
   }
 
   @patch('/roles')
+  @authenticate('jwt')
   @response(200, {
     description: 'Roles PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -96,6 +101,7 @@ export class RolesController {
   }
 
   @get('/roles/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'Roles model instance',
     content: {
@@ -112,6 +118,7 @@ export class RolesController {
   }
 
   @patch('/roles/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Roles PATCH success',
   })
@@ -130,6 +137,7 @@ export class RolesController {
   }
 
   @put('/roles/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Roles PUT success',
   })
@@ -141,6 +149,7 @@ export class RolesController {
   }
 
   @del('/roles/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Roles DELETE success',
   })

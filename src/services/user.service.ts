@@ -6,6 +6,7 @@ import {HttpErrors} from '@loopback/rest';
 import {UserProfile, securityId} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import log4js from 'log4js';
+import shortUUID from 'short-uuid';
 import {BaseReponse} from '../common/models/response';
 import {Users} from '../models';
 import {RolesRepository, UsersRepository} from '../repositories';
@@ -52,6 +53,9 @@ export class UserService implements BaseUserService<Users, Credentials> {
     return {
       [securityId]: user.id?.toString() ?? '',
       email: user.email,
+      name: user.fullName,
+      roles: user.rolesId,
+      tokenId: shortUUID().new(),
     }
   }
 

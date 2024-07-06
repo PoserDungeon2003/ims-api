@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -33,6 +34,7 @@ export class TrainingProgramController {
   ) { }
 
   @post('/training-programs')
+  @authenticate('jwt')
   @response(200, {
     description: 'TrainingProgram model instance',
     content: {'application/json': {schema: getModelSchemaRef(CreateTrainingProgramRQ)}},
@@ -53,6 +55,7 @@ export class TrainingProgramController {
   }
 
   @get('/training-programs/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'TrainingProgram model count',
     content: {'application/json': {schema: CountSchema}},
@@ -64,6 +67,7 @@ export class TrainingProgramController {
   }
 
   @get('/training-programs')
+  @authenticate('jwt')
   @response(200, {
     description: 'Array of TrainingProgram model instances',
     content: {
@@ -82,6 +86,7 @@ export class TrainingProgramController {
   }
 
   @patch('/training-programs')
+  @authenticate('jwt')
   @response(200, {
     description: 'TrainingProgram PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -101,6 +106,7 @@ export class TrainingProgramController {
   }
 
   @get('/training-programs/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'TrainingProgram model instance',
     content: {
@@ -117,6 +123,7 @@ export class TrainingProgramController {
   }
 
   @patch('/training-programs/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'TrainingProgram PATCH success',
   })
@@ -135,6 +142,7 @@ export class TrainingProgramController {
   }
 
   @put('/training-programs/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'TrainingProgram PUT success',
   })
@@ -146,6 +154,7 @@ export class TrainingProgramController {
   }
 
   @del('/training-programs/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'TrainingProgram DELETE success',
   })

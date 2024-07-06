@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {service} from '@loopback/core';
 import {
   Count,
@@ -35,6 +36,7 @@ export class TaskController {
   ) { }
 
   @post('/tasks')
+  @authenticate('jwt')
   @response(200, {
     description: 'Tasks model instance',
     content: {'application/json': {schema: getModelSchemaRef(Tasks)}},
@@ -55,6 +57,7 @@ export class TaskController {
   }
 
   @post('/tasks/assign')
+  @authenticate('jwt')
   @response(200, {
     description: 'Assign task to intern',
     content: {'application/json': {schema: getModelSchemaRef(InternTask)}},
@@ -75,6 +78,7 @@ export class TaskController {
   }
 
   @get('/tasks/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'Tasks model count',
     content: {'application/json': {schema: CountSchema}},
@@ -86,6 +90,7 @@ export class TaskController {
   }
 
   @get('/tasks')
+  @authenticate('jwt')
   @response(200, {
     description: 'Array of Tasks model instances',
     content: {
@@ -104,6 +109,7 @@ export class TaskController {
   }
 
   @patch('/tasks')
+  @authenticate('jwt')
   @response(200, {
     description: 'Tasks PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -123,6 +129,7 @@ export class TaskController {
   }
 
   @get('/tasks/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'Tasks model instance',
     content: {
@@ -139,6 +146,7 @@ export class TaskController {
   }
 
   @patch('/tasks/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Tasks PATCH success',
   })
@@ -157,6 +165,7 @@ export class TaskController {
   }
 
   @put('/tasks/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Tasks PUT success',
   })
@@ -168,6 +177,7 @@ export class TaskController {
   }
 
   @del('/tasks/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Tasks DELETE success',
   })

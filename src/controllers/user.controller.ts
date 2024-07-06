@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {Credentials} from '@loopback/authentication-jwt';
 import {service} from '@loopback/core';
 import {
@@ -23,17 +24,20 @@ import {CredentialsRequestBody} from '../common/models/request';
 import {BaseReponse, LoginRS} from '../common/models/response';
 import {Users} from '../models';
 import {UsersRepository} from '../repositories';
-import {UserService} from '../services';
+import {JwtService, UserService} from '../services';
 
 export class UserController {
   constructor(
     @repository(UsersRepository)
     public usersRepository: UsersRepository,
     @service(UserService)
-    private userService: UserService
+    private userService: UserService,
+    @service(JwtService)
+    private jwtService: JwtService
   ) { }
 
   @post('/users')
+  @authenticate('jwt')
   @response(200, {
     description: 'Users model instance',
     content: {'application/json': {schema: getModelSchemaRef(Users)}},
@@ -76,15 +80,20 @@ export class UserController {
     const user = await this.userService.verifyCredentials(credentials);
 
     const userProfile = this.userService.convertToUserProfile(user);
+    console.log('===userProfile', JSON.stringify(userProfile))
 
+    const token = await this.jwtService.generateToken(userProfile as any);
     return {
-      email: userProfile.email || '',
+      token,
       id: String(user.id),
       name: user.fullName,
+      email: user.email,
+      roles: userProfile.roles,
     }
   }
 
   @get('/users/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'Users model count',
     content: {'application/json': {schema: CountSchema}},
@@ -96,6 +105,7 @@ export class UserController {
   }
 
   @get('/users')
+  @authenticate('jwt')
   @response(200, {
     description: 'Array of Users model instances',
     content: {
@@ -114,6 +124,7 @@ export class UserController {
   }
 
   @patch('/users')
+  @authenticate('jwt')
   @response(200, {
     description: 'Users PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -133,6 +144,7 @@ export class UserController {
   }
 
   @get('/users/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'Users model instance',
     content: {
@@ -149,6 +161,7 @@ export class UserController {
   }
 
   @patch('/users/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Users PATCH success',
   })
@@ -167,6 +180,7 @@ export class UserController {
   }
 
   @put('/users/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Users PUT success',
   })
@@ -178,6 +192,7 @@ export class UserController {
   }
 
   @del('/users/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Users DELETE success',
   })

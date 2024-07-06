@@ -88,3 +88,9 @@
   username: jennifertaylor
   password: password15
   rolesId: 3
+- email: admin@admin.com
+  phone: 123
+  fullName: Admin
+  username: admin
+  password: admin@admin
+  rolesId: 4
