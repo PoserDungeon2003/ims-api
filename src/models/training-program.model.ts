@@ -4,7 +4,17 @@ import {Feedback} from './feedback.model';
 import {Tasks} from './tasks.model';
 import {Users} from './users.model';
 
-@model()
+@model({
+  settings: {
+    indexes: {
+      trainind_program_code_idx: {
+        keys: {
+          code: 1,
+        },
+      },
+    },
+  },
+})
 export class TrainingProgram extends TimeStampMixin(Entity) {
   @property({
     type: 'number',

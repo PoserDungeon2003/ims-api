@@ -1,6 +1,21 @@
 import {Entity, model, property} from '@loopback/repository';
 
-@model()
+@model({
+  settings: {
+    indexes: {
+      work_result_internId_idx: {
+        keys: {
+          internId: 1,
+        },
+      },
+      work_result_trainingProgramId_idx: {
+        keys: {
+          trainingProgramId: 1,
+        },
+      },
+    },
+  }
+})
 export class WorkResult extends Entity {
   @property({
     type: 'number',

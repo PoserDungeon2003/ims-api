@@ -12,12 +12,20 @@ import {TrainingProgram} from './training-program.model';
     indexes: {
       users_username_idx: {
         keys: {
-          username: 1
+          username: 1,
         },
         options: {
-          unique: true
-        }
-      }
+          unique: true,
+        },
+      },
+      users_email_idx: {
+        keys: {
+          email: 1,
+        },
+        options: {
+          unique: true,
+        },
+      },
     }
     // foreignKeys: {
     //   fk_roles_roleId: {

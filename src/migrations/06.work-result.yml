@@ -1,0 +1,59 @@
+- id: 1
+  percentage: 85
+  note: "Great improvement in the last quarter."
+  username: "barbaragarcia"
+  code: TP001
+
+- id: 2
+  percentage: 90
+  note: "Outstanding performance."
+  username: "williamthomas"
+  code: TP002
+
+- id: 3
+  percentage: 75
+  note: "Satisfactory work."
+  username: "elizabethhernandez"
+  code: TP003
+
+- id: 4
+  percentage: 65
+  note: "Needs to improve attention to detail."
+  username: "christophermoore"
+  code: TP004
+
+- id: 5
+  percentage: 80
+  note: "Good work overall."
+  username: "jennifertaylor"
+  code: TP005
+
+- id: 6
+  percentage: 95
+  note: "Exceptional job, highly recommended."
+  username: "barbaragarcia"
+  code: TP006
+
+- id: 7
+  percentage: 70
+  note: "Adequate but room for growth."
+  username: "williamthomas"
+  code: TP007
+
+- id: 8
+  percentage: 60
+  note: "Below expectations, needs significant improvement."
+  username: "elizabethhernandez"
+  code: TP008
+
+- id: 9
+  percentage: 88
+  note: "Very good, almost excellent."
+  username: "christophermoore"
+  code: TP009
+
+- id: 10
+  percentage: 50
+  note: "Unsatisfactory performance."
+  username: "jennifertaylor"
+  code: TP010
