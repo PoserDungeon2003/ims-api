@@ -82,15 +82,15 @@ export class CreateTasksRQ {
   })
   description: string
   @property({
-    type: 'string',
+    type: 'number',
     required: true,
   })
-  trainingProgramCode: string
+  trainingProgramId: number
   @property({
-    type: 'string',
+    type: 'number',
     required: true,
   })
-  mentorName: string
+  usersId: number
 }
 
 @model()
@@ -114,8 +114,8 @@ export class CreateTrainingProgramRQ {
   code: string
 
   @property({
-    type: 'string',
+    type: 'number',
     required: true,
   })
-  createdBy: string
+  usersId: number
 }

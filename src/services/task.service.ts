@@ -1,7 +1,6 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {CreateTasksRQ} from '../common/models/request';
-import {BaseReponse} from '../common/models/response';
 import {Role} from '../common/type';
 import {TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
 
@@ -16,10 +15,10 @@ export class TaskService {
     private trainingProgramRepository: TrainingProgramRepository,
   ) { }
 
-  async createTasks(task: CreateTasksRQ): Promise<BaseReponse> {
+  async createTasks(task: CreateTasksRQ) {
     let trainingProgram = await this.trainingProgramRepository.findOne({
       where: {
-        code: task.trainingProgramCode
+        id: task.trainingProgramId
       }
     })
 
@@ -32,7 +31,7 @@ export class TaskService {
 
     let mentor = await this.usersRepository.findOne({
       where: {
-        fullName: task.mentorName
+        id: task.usersId
       }
     })
 
@@ -48,13 +47,10 @@ export class TaskService {
         name: task.name,
         description: task.description,
         trainingProgramId: trainingProgram.id,
-        mentorId: mentor?.id
+        usersId: mentor?.id
       })
       if (response) {
-        return {
-          success: 1,
-          message: "Create task successful"
-        }
+        return response
       }
       return {
         success: 0,

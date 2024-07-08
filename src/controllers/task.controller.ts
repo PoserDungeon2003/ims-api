@@ -52,7 +52,7 @@ export class TaskController {
       },
     })
     tasks: Omit<CreateTasksRQ, 'y'>,
-  ): Promise<BaseReponse> {
+  ) {
     return this.taskService.createTasks(tasks);
   }
 

@@ -20,7 +20,6 @@ import {
   response,
 } from '@loopback/rest';
 import {CreateTrainingProgramRQ} from '../common/models/request';
-import {BaseReponse} from '../common/models/response';
 import {TrainingProgram} from '../models';
 import {TrainingProgramRepository} from '../repositories';
 import {TrainingProgramService} from '../services';
@@ -50,7 +49,7 @@ export class TrainingProgramController {
       },
     })
     trainingProgram: CreateTrainingProgramRQ,
-  ): Promise<BaseReponse> {
+  ) {
     return this.trainingProgramService.createTrainingProgram(trainingProgram);
   }
 

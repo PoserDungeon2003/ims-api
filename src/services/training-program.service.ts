@@ -16,7 +16,7 @@ export class TrainingProgramService {
   async createTrainingProgram(trainingProgramRQ: CreateTrainingProgramRQ) {
     let user = await this.usersRepository.findOne({
       where: {
-        fullName: trainingProgramRQ.createdBy
+        id: trainingProgramRQ.usersId
       }
     })
 
@@ -36,10 +36,11 @@ export class TrainingProgramService {
     try {
       let trainingProgram = await this.trainingProgramRepository.create({
         ...trainingProgramRQ,
-        coordinatorId: user.id
+        createdBy: user.fullName,
+        usersId: user.id
       })
       if (trainingProgram) {
-        return {success: 1}
+        return trainingProgram
       }
       else {
         return {success: 0, message: "Create training program failed"}
