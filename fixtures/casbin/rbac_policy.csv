@@ -1,0 +1,6 @@
+p, Admin, .*, .*
+p, guestRole, users, find|count|login|
+p, guestRole, , index|indexRedirect|spec
+g, guest, guestRole
+p, HRManagerRole, applications, .*
+g, HRManager, HRManagerRole
