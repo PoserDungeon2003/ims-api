@@ -123,6 +123,30 @@ export class UserController {
     return this.usersRepository.find(filter);
   }
 
+  @get('/users/info')
+  @authenticate('jwt')
+  @response(200, {
+    description: 'Array of Users model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Users, {includeRelations: true}),
+        },
+      },
+    },
+  })
+  async getUserInfo(
+  ): Promise<Users[]> {
+    return this.usersRepository.find({
+      fields: {
+        password: false,
+        username: false,
+        email: false,
+      }
+    });
+  }
+
   @patch('/users')
   @authenticate('jwt')
   @response(200, {

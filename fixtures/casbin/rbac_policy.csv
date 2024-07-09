@@ -3,4 +3,15 @@ p, guestRole, users, find|count|login|
 p, guestRole, , index|indexRedirect|spec
 g, guest, guestRole
 p, HRManagerRole, applications, .*
+p, HRManagerRole, feedbacks, .*
 g, HRManager, HRManagerRole
+p, MentorRole, tasks, .*
+p, MentorRole, taskmanagements, .*
+p, MentorRole, feedback, find
+p, MentorRole, intern, find|count
+p, MentorRole, users, find|count
+p, MentorRole, trainingprograms, find|count
+g, Mentor, MentorRole
+p, CoordinatorRole, trainingprograms, .*
+p, CoordinatorRole, users, find|count
+g, Coordinator, CoordinatorRole

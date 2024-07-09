@@ -63,10 +63,10 @@ export class CreateInternRQ {
   })
   experiences?: string
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  usersId: number
+  usersId: string
 }
 
 @model()
@@ -87,10 +87,10 @@ export class CreateTasksRQ {
   })
   trainingProgramId: number
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  usersId: number
+  usersId: string
 }
 
 @model()
@@ -114,8 +114,8 @@ export class CreateTrainingProgramRQ {
   code: string
 
   @property({
-    type: 'number',
+    type: 'string',
     required: true,
   })
-  usersId: number
+  usersId: string
 }
