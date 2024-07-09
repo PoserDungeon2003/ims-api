@@ -1,4 +1,5 @@
-import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {User as BaseUser} from '@loopback/authentication-jwt';
+import {belongsTo, hasMany, model, property} from '@loopback/repository';
 import {Feedback} from './feedback.model';
 import {Intern} from './intern.model';
 import {Interview} from './interview.model';
@@ -6,6 +7,7 @@ import {JobPosition} from './job-position.model';
 import {Roles} from './roles.model';
 import {Tasks} from './tasks.model';
 import {TrainingProgram} from './training-program.model';
+
 
 @model({
   settings: {
@@ -39,19 +41,13 @@ import {TrainingProgram} from './training-program.model';
     // },
   },
 })
-export class Users extends Entity {
-  @property({
-    type: 'number',
-    id: true,
-    generated: true,
-  })
-  id?: number;
-
+export class Users extends BaseUser {
   @property({
     type: 'string',
-    required: true,
+    id: true,
+    defaultFn: 'uuidv4',
   })
-  email: string;
+  id: string;
 
   @property({
     type: 'number',
@@ -64,12 +60,6 @@ export class Users extends Entity {
     required: true,
   })
   fullName: string;
-
-  @property({
-    type: 'string',
-    required: true,
-  })
-  username: string;
 
   @property({
     type: 'string',

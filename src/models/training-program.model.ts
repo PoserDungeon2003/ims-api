@@ -54,7 +54,7 @@ export class TrainingProgram extends TimeStampMixin(Entity) {
   feedbacks: Feedback[];
 
   @belongsTo(() => Users)
-  usersId: number;
+  usersId: string;
   // Define well-known properties here
 
   // Indexer property to allow additional data

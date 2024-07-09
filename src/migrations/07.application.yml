@@ -1,0 +1,89 @@
+- id: 1
+  fullName: John Doe
+  email: john.doe@example.com
+  phone: 123456789
+  resume: john_doe_resume.pdf
+  coverLetter: john_doe_cover_letter.pdf
+  appliedTo: Software Engineer
+  status: pending
+
+- id: 2
+  fullName: Jane Smith
+  email: jane.smith@example.com
+  phone: 987654321
+  resume: jane_smith_resume.pdf
+  coverLetter: jane_smith_cover_letter.pdf
+  appliedTo: Data Scientist
+  status: accepted
+
+- id: 3
+  fullName: Michael Johnson
+  email: michael.johnson@example.com
+  phone: 555123456
+  resume: michael_johnson_resume.pdf
+  coverLetter: michael_johnson_cover_letter.pdf
+  appliedTo: Product Manager
+  status: rejected
+
+- id: 4
+  fullName: Emily Davis
+  email: emily.davis@example.com
+  phone: 555987654
+  resume: emily_davis_resume.pdf
+  coverLetter: emily_davis_cover_letter.pdf
+  appliedTo: UX Designer
+  status: pending
+
+- id: 5
+  fullName: David Wilson
+  email: david.wilson@example.com
+  phone: 444123456
+  resume: david_wilson_resume.pdf
+  coverLetter: david_wilson_cover_letter.pdf
+  appliedTo: Marketing Specialist
+  status: pending
+
+- id: 6
+  fullName: Sarah Miller
+  email: sarah.miller@example.com
+  phone: 444987654
+  resume: sarah_miller_resume.pdf
+  coverLetter: sarah_miller_cover_letter.pdf
+  appliedTo: Graphic Designer
+  status: accepted
+
+- id: 7
+  fullName: James Brown
+  email: james.brown@example.com
+  phone: 333123456
+  resume: james_brown_resume.pdf
+  coverLetter: james_brown_cover_letter.pdf
+  appliedTo: Content Writer
+  status: rejected
+
+- id: 8
+  fullName: Linda Martinez
+  email: linda.martinez@example.com
+  phone: 333987654
+  resume: linda_martinez_resume.pdf
+  coverLetter: linda_martinez_cover_letter.pdf
+  appliedTo: HR Manager
+  status: pending
+
+- id: 9
+  fullName: Robert Taylor
+  email: robert.taylor@example.com
+  phone: 222123456
+  resume: robert_taylor_resume.pdf
+  coverLetter: robert_taylor_cover_letter.pdf
+  appliedTo: Sales Executive
+  status: accepted
+
+- id: 10
+  fullName: Patricia Anderson
+  email: patricia.anderson@example.com
+  phone: 222987654
+  resume: patricia_anderson_resume.pdf
+  coverLetter: patricia_anderson_cover_letter.pdf
+  appliedTo: Business Analyst
+  status: pending

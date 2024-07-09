@@ -49,6 +49,7 @@
   "dependencies": {
     "@loopback/authentication": "^11.0.3",
     "@loopback/authentication-jwt": "^0.15.3",
+    "@loopback/authorization": "^0.15.3",
     "@loopback/boot": "^7.0.2",
     "@loopback/core": "^6.0.2",
     "@loopback/repository": "^7.0.2",
@@ -56,6 +57,7 @@
     "@loopback/rest-explorer": "^7.0.2",
     "@loopback/service-proxy": "^7.0.2",
     "bcryptjs": "^2.4.3",
+    "casbin": "^5.30.0",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",

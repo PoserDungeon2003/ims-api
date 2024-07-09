@@ -1,6 +1,6 @@
 import {UserService as BaseUserService} from '@loopback/authentication';
 import {Credentials} from '@loopback/authentication-jwt';
-import { /* inject, */ BindingScope, injectable, service} from '@loopback/core';
+import {service} from '@loopback/core';
 import {repository} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {UserProfile, securityId} from '@loopback/security';
@@ -8,6 +8,7 @@ import {compare} from 'bcryptjs';
 import log4js from 'log4js';
 import shortUUID from 'short-uuid';
 import {BaseReponse} from '../common/models/response';
+import {Role} from '../common/type';
 import {Users} from '../models';
 import {RolesRepository, UsersRepository} from '../repositories';
 import {PasswordHashService} from './password-hash.service';
@@ -15,7 +16,6 @@ import {PasswordHashService} from './password-hash.service';
 const logger = log4js.getLogger('user.controller')
 logger.level = 'debug'
 
-@injectable({scope: BindingScope.TRANSIENT})
 export class UserService implements BaseUserService<Users, Credentials> {
   constructor(
     @repository(UsersRepository) private userRepository: UsersRepository,
@@ -50,11 +50,12 @@ export class UserService implements BaseUserService<Users, Credentials> {
     return foundUser
   }
   convertToUserProfile(user: Users): UserProfile {
+    const role = Role[user.rolesId]
     return {
       [securityId]: user.id?.toString() ?? '',
       email: user.email,
       name: user.fullName,
-      roles: user.rolesId,
+      roles: [role],
       tokenId: shortUUID().new(),
     }
   }
@@ -74,7 +75,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
       try {
         user = await this.userRepository.create({
           email: userParams.email.toLowerCase(),
-          username: userParams.username.toLowerCase(),
+          username: userParams.username?.toLowerCase(),
           fullName: userParams.fullName,
           phone: userParams.phone,
           password: await this.passwordHasher.hashPassword(userParams.password),

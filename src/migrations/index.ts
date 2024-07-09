@@ -6,6 +6,7 @@ import createUsers from './03.user';
 import createIntern from './04.intern';
 import createTasks from './05.tasks';
 import createWorkResult from './06.work-result';
+import createApplication from './07.application';
 
 export async function premigrates(app: ImsApiApplication) {
   const repos = await app.getRepository(MigrationRepository)
@@ -35,6 +36,7 @@ export async function migrations(app: ImsApiApplication) {
     {name: '04.trainingprogram', migration: createTrainingProgram},
     {name: '05.tasks', migration: createTasks},
     {name: '06.work-result', migration: createWorkResult},
+    {name: '07.application', migration: createApplication},
   ];
 
   for (const migration of list) {

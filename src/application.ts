@@ -1,5 +1,5 @@
 import {AuthenticationComponent} from '@loopback/authentication';
-import {JWTAuthenticationComponent, TokenServiceBindings} from '@loopback/authentication-jwt';
+import {JWTAuthenticationComponent, SECURITY_SCHEME_SPEC, TokenServiceBindings, UserServiceBindings} from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
@@ -10,7 +10,10 @@ import {
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import path from 'path';
+import {AuthorizationComponent, CasbinAuthenticationComponent} from './components/casbin-authorization';
+import {UsersRepository} from './repositories';
 import {MySequence} from './sequence';
+import {JwtService, UserService} from './services';
 
 export {ApplicationConfig};
 
@@ -25,9 +28,16 @@ export class ImsApiApplication extends BootMixin(
 
     // Set up the custom sequence
     this.sequence(MySequence);
-
+    this.addSecuritySpec();
+    this.component(AuthenticationComponent);
+    this.component(AuthorizationComponent);
+    this.component(JWTAuthenticationComponent);
+    this.bind(UserServiceBindings.USER_REPOSITORY).toClass(UsersRepository)
     this.bind(TokenServiceBindings.TOKEN_SECRET).to(TOKEN_SECRET)
     this.bind(TokenServiceBindings.TOKEN_EXPIRES_IN).to(TOKEN_EXPIRES_IN)
+    this.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(JwtService)
+    this.component(CasbinAuthenticationComponent);
+    this.bind(UserServiceBindings.USER_SERVICE).toClass(UserService)
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 
@@ -36,8 +46,6 @@ export class ImsApiApplication extends BootMixin(
       path: '/explorer',
     });
     this.component(RestExplorerComponent);
-    this.component(AuthenticationComponent);
-    this.component(JWTAuthenticationComponent);
 
     this.projectRoot = __dirname;
     // Customize @loopback/boot Booter Conventions here
@@ -49,5 +57,23 @@ export class ImsApiApplication extends BootMixin(
         nested: true,
       },
     };
+  }
+
+  addSecuritySpec(): void {
+    this.api({
+      openapi: '3.0.0',
+      info: {
+        title: 'ImsApi',
+        version: require('.././package.json').version,
+      },
+      paths: {},
+      components: {securitySchemes: SECURITY_SCHEME_SPEC},
+      security: [
+        {
+          jwt: [],
+        },
+      ],
+      servers: [{url: '/'}],
+    });
   }
 }

@@ -1,6 +1,6 @@
 import {authenticate} from '@loopback/authentication';
-import {Credentials} from '@loopback/authentication-jwt';
-import {service} from '@loopback/core';
+import {Credentials, TokenServiceBindings, UserServiceBindings} from '@loopback/authentication-jwt';
+import {inject} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -30,9 +30,9 @@ export class UserController {
   constructor(
     @repository(UsersRepository)
     public usersRepository: UsersRepository,
-    @service(UserService)
+    @inject(UserServiceBindings.USER_SERVICE)
     private userService: UserService,
-    @service(JwtService)
+    @inject(TokenServiceBindings.TOKEN_SERVICE)
     private jwtService: JwtService
   ) { }
 
@@ -52,7 +52,7 @@ export class UserController {
           }),
         },
       },
-    }) users: Omit<Users, 'usersId'>,
+    }) users: Users,
   ): Promise<BaseReponse> {
     try {
       return await this.userService.createUser(users);
@@ -154,7 +154,7 @@ export class UserController {
     },
   })
   async findById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: string,
     @param.filter(Users, {exclude: 'where'}) filter?: FilterExcludingWhere<Users>
   ): Promise<Users> {
     return this.usersRepository.findById(id, filter);
@@ -166,7 +166,7 @@ export class UserController {
     description: 'Users PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: string,
     @requestBody({
       content: {
         'application/json': {
@@ -185,7 +185,7 @@ export class UserController {
     description: 'Users PUT success',
   })
   async replaceById(
-    @param.path.number('id') id: number,
+    @param.path.number('id') id: string,
     @requestBody() users: Users,
   ): Promise<void> {
     await this.usersRepository.replaceById(id, users);
@@ -196,7 +196,7 @@ export class UserController {
   @response(204, {
     description: 'Users DELETE success',
   })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
+  async deleteById(@param.path.number('id') id: string): Promise<void> {
     await this.usersRepository.deleteById(id);
   }
 }

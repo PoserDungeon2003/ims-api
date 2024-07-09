@@ -24,7 +24,7 @@ export class Tasks extends Entity {
   name: string;
 
   @belongsTo(() => Users)
-  usersId: number;
+  usersId: string;
 
   @belongsTo(() => TrainingProgram)
   trainingProgramId: number;
