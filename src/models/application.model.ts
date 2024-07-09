@@ -1,7 +1,6 @@
-import {belongsTo, Entity, hasMany, model, property} from '@loopback/repository';
+import {Entity, hasMany, model, property} from '@loopback/repository';
 import {TimeStampMixin} from '../mixins';
 import {Interview} from './interview.model';
-import {JobPosition} from './job-position.model';
 
 @model()
 export class Application extends TimeStampMixin(Entity) {
@@ -52,9 +51,6 @@ export class Application extends TimeStampMixin(Entity) {
     default: 'pending',
   })
   status?: 'pending' | 'accepted' | 'rejected';
-
-  @belongsTo(() => JobPosition)
-  jobPositionId: number;
 
   @hasMany(() => Interview)
   interviews: Interview[];
