@@ -1,0 +1,69 @@
+- id: 1
+  feedbackText: "The training program was very insightful and informative."
+  rating: 5
+  username: barbaragarcia
+  intern: nguyenvana@example.com
+  trainingProgramCode: TP001
+
+- id: 2
+  feedbackText: "I found the material quite challenging but rewarding."
+  rating: 4
+  username: elizabethhernandez
+  intern: hoangvane@example.com
+  trainingProgramCode: TP002
+
+- id: 3
+  feedbackText: "Great experience! The trainers were very knowledgeable."
+  rating: 5
+  username: christophermoore
+  intern: vothif@example.com
+  trainingProgramCode: TP003
+
+- id: 4
+  feedbackText: "The content was outdated and not very engaging."
+  rating: 2
+  username: barbaragarcia
+  intern: nguyenvana@example.com
+  trainingProgramCode: TP004
+
+- id: 5
+  feedbackText: "Learned a lot of new skills that I can apply in my job."
+  rating: 5
+  username: elizabethhernandez
+  intern: hoangvane@example.com
+  trainingProgramCode: TP005
+
+- id: 6
+  feedbackText: "The pace of the training was too fast for beginners."
+  rating: 3
+  username: christophermoore
+  intern: vothif@example.com
+  trainingProgramCode: TP006
+
+- id: 7
+  feedbackText: "Excellent program with a lot of practical exercises."
+  rating: 4
+  username: barbaragarcia
+  intern: nguyenvana@example.com
+  trainingProgramCode: TP007
+
+- id: 8
+  feedbackText: "The training was very theoretical and lacked hands-on practice."
+  rating: 3
+  username: elizabethhernandez
+  intern: hoangvane@example.com
+  trainingProgramCode: TP008
+
+- id: 9
+  feedbackText: "Good balance of theory and practical sessions."
+  rating: 4
+  username: christophermoore
+  intern: vothif@example.com
+  trainingProgramCode: TP009
+
+- id: 10
+  feedbackText: "The trainers were very supportive and answered all questions."
+  rating: 5
+  username: barbaragarcia
+  intern: nguyenvana@example.com
+  trainingProgramCode: TP010

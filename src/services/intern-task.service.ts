@@ -1,6 +1,5 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
-import {BaseReponse} from '../common/models/response';
 import {InternTask} from '../models';
 import {InternRepository, InternTaskRepository, TasksRepository} from '../repositories';
 
@@ -15,7 +14,7 @@ export class InternTaskService {
     private internTaskRepository: InternTaskRepository
   ) { }
 
-  async assignTask(request: InternTask): Promise<BaseReponse> {
+  async assignTask(request: InternTask) {
     try {
       let intern = await this.internRepository.findById(request.internId);
       let task = await this.tasksRepository.findById(request.tasksId);
@@ -37,15 +36,11 @@ export class InternTaskService {
           message: "Task already assigned to intern"
         }
       }
-      await this.internTaskRepository.create({
+      return await this.internTaskRepository.create({
         internId: request.internId,
         tasksId: request.tasksId,
         isCompleted: request.isCompleted
       });
-      return {
-        success: 1,
-        message: "Assign task successful"
-      }
     } catch (error) {
       console.log(error);
       return {

@@ -1,8 +1,8 @@
-import {Entity, model, property, belongsTo} from '@loopback/repository';
+import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {TimeStampMixin} from '../mixins';
-import {Users} from './users.model';
 import {Intern} from './intern.model';
 import {TrainingProgram} from './training-program.model';
+import {Users} from './users.model';
 
 @model()
 export class Feedback extends TimeStampMixin(Entity) {
@@ -25,7 +25,7 @@ export class Feedback extends TimeStampMixin(Entity) {
   })
   rating: number;
   @belongsTo(() => Users)
-  usersId: number;
+  usersId: string;
 
   @belongsTo(() => Intern)
   internId: number;

@@ -1,4 +1,5 @@
 import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -20,11 +21,14 @@ import {
 } from '@loopback/rest';
 import {InternTask} from '../models';
 import {InternTaskRepository} from '../repositories';
+import {InternTaskService} from '../services';
 
 export class TaskManagementController {
   constructor(
     @repository(InternTaskRepository)
     public internTaskRepository: InternTaskRepository,
+    @service(InternTaskService)
+    private internTaskService: InternTaskService,
   ) { }
 
   @post('/tasks-management')
@@ -44,9 +48,9 @@ export class TaskManagementController {
         },
       },
     })
-    internTask: Omit<InternTask, 'id'>,
-  ): Promise<InternTask> {
-    return this.internTaskRepository.create(internTask);
+    tasks: InternTask,
+  ) {
+    return await this.internTaskService.assignTask(tasks);
   }
 
   @get('/tasks-management/count')

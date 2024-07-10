@@ -20,7 +20,6 @@ import {
   response,
 } from '@loopback/rest';
 import {CreateTasksRQ} from '../common/models/request';
-import {BaseReponse} from '../common/models/response';
 import {InternTask, Tasks} from '../models';
 import {TasksRepository} from '../repositories';
 import {InternTaskService, TaskService} from '../services';
@@ -73,7 +72,7 @@ export class TaskController {
       },
     })
     tasks: InternTask,
-  ): Promise<BaseReponse> {
+  ) {
     return await this.internTaskService.assignTask(tasks);
   }
 
