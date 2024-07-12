@@ -1,7 +1,8 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {CreateInternRQ} from '../common/models/request';
 import {Role} from '../common/type';
+import {Intern} from '../models';
 import {InternRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -64,5 +65,33 @@ export class InternService {
     } catch (error) {
       return {success: 0, message: error}
     }
+  }
+
+  async count(where?: Where<Intern>): Promise<Count> {
+    return this.internRepository.count(where);
+  }
+
+  async find(filter?: Filter<Intern>): Promise<Intern[]> {
+    return this.internRepository.find(filter);
+  }
+
+  async updateAll(intern: Intern, where?: Where<Intern>): Promise<Count> {
+    return this.internRepository.updateAll(intern, where);
+  }
+
+  async findById(id: number, filter?: FilterExcludingWhere<Intern>): Promise<Intern> {
+    return this.internRepository.findById(id, filter);
+  }
+
+  async updateById(id: number, intern: Intern): Promise<void> {
+    await this.internRepository.updateById(id, intern);
+  }
+
+  async replaceById(id: number, intern: Intern): Promise<void> {
+    await this.internRepository.replaceById(id, intern);
+  }
+
+  async deleteById(id: number): Promise<void> {
+    await this.internRepository.deleteById(id);
   }
 }

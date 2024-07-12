@@ -5,8 +5,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -21,13 +20,10 @@ import {
 } from '@loopback/rest';
 import {CreateInternRQ} from '../common/models/request';
 import {Intern} from '../models';
-import {InternRepository} from '../repositories';
 import {InternService} from '../services';
 
 export class InternController {
   constructor(
-    @repository(InternRepository)
-    public internRepository: InternRepository,
     @service(InternService)
     private internService: InternService,
   ) { }
@@ -62,7 +58,7 @@ export class InternController {
   async count(
     @param.where(Intern) where?: Where<Intern>,
   ): Promise<Count> {
-    return this.internRepository.count(where);
+    return this.internService.count(where);
   }
 
   @get('/intern')
@@ -81,7 +77,7 @@ export class InternController {
   async find(
     @param.filter(Intern) filter?: Filter<Intern>,
   ): Promise<Intern[]> {
-    return this.internRepository.find(filter);
+    return this.internService.find(filter);
   }
 
   @patch('/intern')
@@ -101,7 +97,7 @@ export class InternController {
     intern: Intern,
     @param.where(Intern) where?: Where<Intern>,
   ): Promise<Count> {
-    return this.internRepository.updateAll(intern, where);
+    return this.internService.updateAll(intern, where);
   }
 
   @get('/intern/{id}')
@@ -118,7 +114,7 @@ export class InternController {
     @param.path.number('id') id: number,
     @param.filter(Intern, {exclude: 'where'}) filter?: FilterExcludingWhere<Intern>
   ): Promise<Intern> {
-    return this.internRepository.findById(id, filter);
+    return this.internService.findById(id, filter);
   }
 
   @patch('/intern/{id}')
@@ -137,7 +133,7 @@ export class InternController {
     })
     intern: Intern,
   ): Promise<void> {
-    await this.internRepository.updateById(id, intern);
+    await this.internService.updateById(id, intern);
   }
 
   @put('/intern/{id}')
@@ -149,7 +145,7 @@ export class InternController {
     @param.path.number('id') id: number,
     @requestBody() intern: Intern,
   ): Promise<void> {
-    await this.internRepository.replaceById(id, intern);
+    await this.internService.replaceById(id, intern);
   }
 
   @del('/intern/{id}')
@@ -158,6 +154,6 @@ export class InternController {
     description: 'Intern DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.internRepository.deleteById(id);
+    await this.internService.deleteById(id);
   }
 }
