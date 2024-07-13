@@ -21,7 +21,7 @@ import {
 } from '@loopback/rest';
 import {InternTask} from '../models';
 import {InternTaskRepository} from '../repositories';
-import {InternTaskService} from '../services';
+import {InternTaskService, TaskService} from '../services';
 
 export class TaskManagementController {
   constructor(
@@ -29,6 +29,8 @@ export class TaskManagementController {
     public internTaskRepository: InternTaskRepository,
     @service(InternTaskService)
     private internTaskService: InternTaskService,
+    @service(TaskService)
+    private taskService: TaskService,
   ) { }
 
   @post('/tasks-management')
@@ -159,5 +161,15 @@ export class TaskManagementController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.internTaskRepository.deleteById(id);
+  }
+
+  @get('/tasks-management/completion-rate')
+  @authenticate('jwt')
+  @response(200, {
+    description: 'Completion rate of tasks',
+    content: {'application/json': {schema: {type: 'number'}}},
+  })
+  async getCompletionRate(): Promise<number> {
+    return this.taskService.getCompletionRated();
   }
 }

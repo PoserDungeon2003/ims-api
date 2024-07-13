@@ -1,8 +1,9 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
 import {CreateTasksRQ} from '../common/models/request';
 import {Role} from '../common/type';
-import {TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
+import {InternTaskRepository, TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class TaskService {
@@ -13,6 +14,8 @@ export class TaskService {
     private usersRepository: UsersRepository,
     @repository(TrainingProgramRepository)
     private trainingProgramRepository: TrainingProgramRepository,
+    @repository(InternTaskRepository)
+    private internTaskRepository: InternTaskRepository
   ) { }
 
   async createTasks(task: CreateTasksRQ) {
@@ -59,5 +62,26 @@ export class TaskService {
     } catch (error) {
       return {success: 0, message: error}
     }
+  }
+
+  async getCompletionRated(): Promise<number> {
+    try {
+      let completedTasks = await this.internTaskRepository.find({
+        where: {
+          isCompleted: true
+        }
+      })
+      let allAssignedTasks = await this.internTaskRepository.find()
+
+      if (allAssignedTasks.length === 0) {
+        return 0
+      }
+      return completedTasks.length / allAssignedTasks.length
+
+    } catch (error) {
+      throw new HttpErrors[500]("Internal server error")
+    }
+
+
   }
 }
