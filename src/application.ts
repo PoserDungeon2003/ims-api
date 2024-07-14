@@ -9,8 +9,11 @@ import {
   RestExplorerComponent,
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
+import {FirebaseOptions, initializeApp} from 'firebase/app';
+import multer from 'multer';
 import path from 'path';
 import {AuthorizationComponent, CasbinAuthenticationComponent} from './components/casbin-authorization';
+import {FILE_UPLOAD_SERVICE} from './keys';
 import {UsersRepository} from './repositories';
 import {MySequence} from './sequence';
 import {JwtService, UserService} from './services';
@@ -19,6 +22,23 @@ export {ApplicationConfig};
 
 const TOKEN_SECRET = process.env.JWT_TOKEN_SECRET || 'abcdef'
 const TOKEN_EXPIRES_IN = process.env.JWT_TOKEN_EXPIRES_IN || '6000'
+const fireBaseConfig: FirebaseOptions = {
+  apiKey: process.env.FIREBASE_API_KEY,
+  appId: process.env.FIREBASE_APP_ID,
+  projectId: process.env.FIREBASE_PROJECT_ID,
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+}
+
+const multerOptions: multer.Options = {
+  storage: multer.diskStorage({
+    // Upload files to `.sandbox`
+    destination: path.join(__dirname, '../.sandbox'),
+    // Use the original file name as is
+    filename: (req, file, cb) => {
+      cb(null, file.originalname);
+    },
+  }),
+};
 
 export class ImsApiApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
@@ -38,6 +58,8 @@ export class ImsApiApplication extends BootMixin(
     this.bind(TokenServiceBindings.TOKEN_SERVICE).toClass(JwtService)
     this.component(CasbinAuthenticationComponent);
     this.bind(UserServiceBindings.USER_SERVICE).toClass(UserService)
+    this.configure(FILE_UPLOAD_SERVICE).to(multerOptions);
+    initializeApp(fireBaseConfig)
     // Set up default home page
     this.static('/', path.join(__dirname, '../public'));
 

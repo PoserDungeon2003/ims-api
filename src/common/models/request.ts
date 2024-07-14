@@ -1,5 +1,6 @@
 import {model, property} from '@loopback/repository';
 import {SchemaObject} from '@loopback/rest';
+import {Blob} from 'buffer';
 
 const CredentialsSchema: SchemaObject = {
   type: 'object',
@@ -118,4 +119,48 @@ export class CreateTrainingProgramRQ {
     required: true,
   })
   usersId: string
+}
+
+@model()
+export class ApplyApplication {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  fullName: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  email: string;
+
+  @property({
+    type: 'number',
+    required: true,
+  })
+  phone: number;
+
+  @property({
+    type: 'buffer',
+    required: true,
+  })
+  resume: Blob;
+
+  @property({
+    type: 'buffer',
+  })
+  coverLetter?: Blob;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  appliedTo: string;
+
+  @property({
+    type: 'string',
+    default: 'pending',
+  })
+  status?: 'pending' | 'accepted' | 'rejected';
 }

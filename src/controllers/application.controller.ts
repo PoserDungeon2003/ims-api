@@ -1,4 +1,5 @@
 import {authenticate} from '@loopback/authentication';
+import {inject, service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -15,31 +16,44 @@ import {
   patch,
   post,
   put,
+  Request,
   requestBody,
+  Response,
   response,
+  RestBindings
 } from '@loopback/rest';
+import {Blob} from 'buffer';
+import {ApplyApplication} from '../common/models/request';
+import {FileUploadHandler} from '../common/type';
+import {FILE_UPLOAD_SERVICE} from '../keys';
 import {Application} from '../models';
 import {ApplicationRepository} from '../repositories';
+import {FileUploadService, FirebaseService} from '../services';
 
 export class ApplicationController {
   constructor(
     @repository(ApplicationRepository)
     public applicationRepository: ApplicationRepository,
+    @service(FirebaseService)
+    private firebaseService: FirebaseService,
+    @inject(FILE_UPLOAD_SERVICE)
+    private handler: FileUploadHandler,
+    // @service(FileService)
+    // private fileService: FileService
   ) { }
 
   @post('/applications')
   @authenticate('jwt')
   @response(200, {
     description: 'Application model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Application)}},
+    content: {'multipart/form-data': {schema: getModelSchemaRef(ApplyApplication)}},
   })
   async create(
     @requestBody({
       content: {
-        'application/json': {
-          schema: getModelSchemaRef(Application, {
+        'multipart/form-data': {
+          schema: getModelSchemaRef(ApplyApplication, {
             title: 'NewApplication',
-            exclude: ['id'],
           }),
         },
       },
@@ -155,5 +169,47 @@ export class ApplicationController {
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.applicationRepository.deleteById(id);
+  }
+
+  @post('/file/upload')
+  @authenticate('jwt')
+  @response(200)
+  async uploadFile(
+    @requestBody.file()
+    file: Blob,
+    @param.query.string('prefix') prefix: string,
+    @param.query.string('fileName') fileName: string
+  ) {
+    return this.firebaseService.uploadFileToStorage(file, prefix, fileName)
+  }
+
+  @post('/files', {
+    responses: {
+      200: {
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+            },
+          },
+        },
+        description: 'Files and fields',
+      },
+    },
+  })
+  @authenticate('jwt')
+  async fileUpload(
+    @requestBody.file()
+    request: Request,
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+  ): Promise<object> {
+    return new Promise<object>((resolve, reject) => {
+      this.handler(request, response, err => {
+        if (err) reject(err);
+        else {
+          resolve(FileUploadService.getFilesAndFields(request));
+        }
+      });
+    });
   }
 }
