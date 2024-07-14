@@ -22,7 +22,7 @@ import {
   response,
   RestBindings
 } from '@loopback/rest';
-import {Blob} from 'buffer';
+import multer from 'multer';
 import {ApplyApplication} from '../common/models/request';
 import {FileUploadHandler} from '../common/type';
 import {FILE_UPLOAD_SERVICE} from '../keys';
@@ -176,11 +176,18 @@ export class ApplicationController {
   @response(200)
   async uploadFile(
     @requestBody.file()
-    file: Blob,
-    @param.query.string('prefix') prefix: string,
-    @param.query.string('fileName') fileName: string
-  ) {
-    return this.firebaseService.uploadFileToStorage(file, prefix, fileName)
+    request: Request,
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+  ): Promise<object> {
+    const upload = multer({storage: multer.memoryStorage()}).single('file');
+    return new Promise<object>((resolve, reject) => {
+      upload(request, response, err => {
+        if (err) reject(err);
+        else {
+          resolve(this.firebaseService.uploadFileToStorage(request, response));
+        }
+      });
+    });
   }
 
   @post('/files', {
