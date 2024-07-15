@@ -1,8 +1,9 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {CreateTasksRQ} from '../common/models/request';
 import {Role} from '../common/type';
+import {Tasks} from '../models';
 import {InternTaskRepository, TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -83,5 +84,33 @@ export class TaskService {
     }
 
 
+  }
+
+  async count(where?: Where<Tasks>): Promise<Count> {
+    return this.tasksRepository.count(where);
+  }
+
+  async findTask(filter?: Filter<Tasks>): Promise<Tasks[]> {
+    return this.tasksRepository.find(filter);
+  }
+
+  async updateAll(tasks: Tasks, where?: Where<Tasks>): Promise<Count> {
+    return this.tasksRepository.updateAll(tasks, where);
+  }
+
+  async findTaskById(id: number, filter?: FilterExcludingWhere<Tasks>): Promise<Tasks> {
+    return this.tasksRepository.findById(id, filter);
+  }
+
+  async updateTaskById(id: number, tasks: Tasks): Promise<void> {
+    await this.tasksRepository.updateById(id, tasks);
+  }
+
+  async replaceById(id: number, tasks: Tasks): Promise<void> {
+    await this.tasksRepository.replaceById(id, tasks);
+  }
+
+  async deleteTaskById(id: number): Promise<void> {
+    await this.tasksRepository.deleteById(id);
   }
 }

@@ -5,7 +5,6 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
   Where
 } from '@loopback/repository';
 import {
@@ -21,13 +20,10 @@ import {
 } from '@loopback/rest';
 import {CreateTasksRQ} from '../common/models/request';
 import {InternTask, Tasks} from '../models';
-import {TasksRepository} from '../repositories';
 import {InternTaskService, TaskService} from '../services';
 
 export class TaskController {
   constructor(
-    @repository(TasksRepository)
-    public tasksRepository: TasksRepository,
     @service(TaskService)
     private taskService: TaskService,
     @service(InternTaskService)
@@ -40,7 +36,7 @@ export class TaskController {
     description: 'Tasks model instance',
     content: {'application/json': {schema: getModelSchemaRef(Tasks)}},
   })
-  async create(
+  async createTask(
     @requestBody({
       content: {
         'application/json': {
@@ -85,7 +81,7 @@ export class TaskController {
   async count(
     @param.where(Tasks) where?: Where<Tasks>,
   ): Promise<Count> {
-    return this.tasksRepository.count(where);
+    return this.taskService.count(where);
   }
 
   @get('/tasks')
@@ -104,7 +100,7 @@ export class TaskController {
   async find(
     @param.filter(Tasks) filter?: Filter<Tasks>,
   ): Promise<Tasks[]> {
-    return this.tasksRepository.find(filter);
+    return this.taskService.findTask(filter);
   }
 
   @patch('/tasks')
@@ -124,7 +120,7 @@ export class TaskController {
     tasks: Tasks,
     @param.where(Tasks) where?: Where<Tasks>,
   ): Promise<Count> {
-    return this.tasksRepository.updateAll(tasks, where);
+    return this.taskService.updateAll(tasks, where);
   }
 
   @get('/tasks/{id}')
@@ -141,7 +137,7 @@ export class TaskController {
     @param.path.number('id') id: number,
     @param.filter(Tasks, {exclude: 'where'}) filter?: FilterExcludingWhere<Tasks>
   ): Promise<Tasks> {
-    return this.tasksRepository.findById(id, filter);
+    return this.taskService.findTaskById(id, filter);
   }
 
   @patch('/tasks/{id}')
@@ -160,7 +156,7 @@ export class TaskController {
     })
     tasks: Tasks,
   ): Promise<void> {
-    await this.tasksRepository.updateById(id, tasks);
+    await this.taskService.updateTaskById(id, tasks);
   }
 
   @put('/tasks/{id}')
@@ -172,7 +168,7 @@ export class TaskController {
     @param.path.number('id') id: number,
     @requestBody() tasks: Tasks,
   ): Promise<void> {
-    await this.tasksRepository.replaceById(id, tasks);
+    await this.taskService.replaceById(id, tasks);
   }
 
   @del('/tasks/{id}')
@@ -181,6 +177,6 @@ export class TaskController {
     description: 'Tasks DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.tasksRepository.deleteById(id);
+    await this.taskService.deleteTaskById(id);
   }
 }
