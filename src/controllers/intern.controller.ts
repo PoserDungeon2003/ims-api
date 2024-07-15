@@ -34,7 +34,7 @@ export class InternController {
     description: 'Intern model instance',
     content: {'application/json': {schema: getModelSchemaRef(CreateInternRQ)}},
   })
-  async create(
+  async createIntern(
     @requestBody({
       content: {
         'application/json': {
@@ -74,10 +74,10 @@ export class InternController {
       },
     },
   })
-  async find(
+  async getInternByFilter(
     @param.filter(Intern) filter?: Filter<Intern>,
   ): Promise<Intern[]> {
-    return this.internService.find(filter);
+    return this.internService.getInternByFilter(filter);
   }
 
   @patch('/intern')
@@ -122,7 +122,7 @@ export class InternController {
   @response(204, {
     description: 'Intern PATCH success',
   })
-  async updateById(
+  async updateInternById(
     @param.path.number('id') id: number,
     @requestBody({
       content: {
@@ -133,7 +133,7 @@ export class InternController {
     })
     intern: Intern,
   ): Promise<void> {
-    await this.internService.updateById(id, intern);
+    await this.internService.updateInternById(id, intern);
   }
 
   @put('/intern/{id}')
@@ -141,7 +141,7 @@ export class InternController {
   @response(204, {
     description: 'Intern PUT success',
   })
-  async replaceById(
+  async removeIntern(
     @param.path.number('id') id: number,
     @requestBody() intern: Intern,
   ): Promise<void> {
@@ -154,6 +154,6 @@ export class InternController {
     description: 'Intern DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.internService.deleteById(id);
+    await this.internService.removeIntern(id);
   }
 }

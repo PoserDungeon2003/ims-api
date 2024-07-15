@@ -71,7 +71,7 @@ export class InternService {
     return this.internRepository.count(where);
   }
 
-  async find(filter?: Filter<Intern>): Promise<Intern[]> {
+  async getInternByFilter(filter?: Filter<Intern>): Promise<Intern[]> {
     return this.internRepository.find(filter);
   }
 
@@ -83,7 +83,7 @@ export class InternService {
     return this.internRepository.findById(id, filter);
   }
 
-  async updateById(id: number, intern: Intern): Promise<void> {
+  async updateInternById(id: number, intern: Intern): Promise<void> {
     await this.internRepository.updateById(id, intern);
   }
 
@@ -91,7 +91,7 @@ export class InternService {
     await this.internRepository.replaceById(id, intern);
   }
 
-  async deleteById(id: number): Promise<void> {
+  async removeIntern(id: number): Promise<void> {
     await this.internRepository.deleteById(id);
   }
 }
