@@ -5,8 +5,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -21,13 +20,10 @@ import {
 } from '@loopback/rest';
 import {CreateTrainingProgramRQ} from '../common/models/request';
 import {TrainingProgram} from '../models';
-import {TrainingProgramRepository} from '../repositories';
 import {TrainingProgramService} from '../services';
 
 export class TrainingProgramController {
   constructor(
-    @repository(TrainingProgramRepository)
-    public trainingProgramRepository: TrainingProgramRepository,
     @service(TrainingProgramService)
     private trainingProgramService: TrainingProgramService
   ) { }
@@ -62,7 +58,7 @@ export class TrainingProgramController {
   async count(
     @param.where(TrainingProgram) where?: Where<TrainingProgram>,
   ): Promise<Count> {
-    return this.trainingProgramRepository.count(where);
+    return this.trainingProgramService.count(where);
   }
 
   @get('/training-programs')
@@ -81,7 +77,7 @@ export class TrainingProgramController {
   async find(
     @param.filter(TrainingProgram) filter?: Filter<TrainingProgram>,
   ): Promise<TrainingProgram[]> {
-    return this.trainingProgramRepository.find(filter);
+    return this.trainingProgramService.findByFilter(filter);
   }
 
   @patch('/training-programs')
@@ -101,7 +97,7 @@ export class TrainingProgramController {
     trainingProgram: TrainingProgram,
     @param.where(TrainingProgram) where?: Where<TrainingProgram>,
   ): Promise<Count> {
-    return this.trainingProgramRepository.updateAll(trainingProgram, where);
+    return this.trainingProgramService.updateAll(trainingProgram, where);
   }
 
   @get('/training-programs/{id}')
@@ -118,7 +114,7 @@ export class TrainingProgramController {
     @param.path.number('id') id: number,
     @param.filter(TrainingProgram, {exclude: 'where'}) filter?: FilterExcludingWhere<TrainingProgram>
   ): Promise<TrainingProgram> {
-    return this.trainingProgramRepository.findById(id, filter);
+    return this.trainingProgramService.findById(id, filter);
   }
 
   @patch('/training-programs/{id}')
@@ -137,7 +133,7 @@ export class TrainingProgramController {
     })
     trainingProgram: TrainingProgram,
   ): Promise<void> {
-    await this.trainingProgramRepository.updateById(id, trainingProgram);
+    await this.trainingProgramService.updateById(id, trainingProgram);
   }
 
   @put('/training-programs/{id}')
@@ -149,7 +145,7 @@ export class TrainingProgramController {
     @param.path.number('id') id: number,
     @requestBody() trainingProgram: TrainingProgram,
   ): Promise<void> {
-    await this.trainingProgramRepository.replaceById(id, trainingProgram);
+    await this.trainingProgramService.replaceById(id, trainingProgram);
   }
 
   @del('/training-programs/{id}')
@@ -158,6 +154,6 @@ export class TrainingProgramController {
     description: 'TrainingProgram DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.trainingProgramRepository.deleteById(id);
+    await this.trainingProgramService.deleteById(id);
   }
 }

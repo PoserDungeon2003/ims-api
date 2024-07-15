@@ -1,7 +1,8 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {CreateTrainingProgramRQ} from '../common/models/request';
 import {Role} from '../common/type';
+import {TrainingProgram} from '../models';
 import {TrainingProgramRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -48,5 +49,35 @@ export class TrainingProgramService {
     } catch (error) {
       return {success: 0, message: error}
     }
+  }
+
+  async count(where?: Where<TrainingProgram>
+  ): Promise<Count> {
+    return this.trainingProgramRepository.count(where);
+  }
+
+  async findByFilter(filter?: Filter<TrainingProgram>,
+  ): Promise<TrainingProgram[]> {
+    return this.trainingProgramRepository.find(filter);
+  }
+
+  async updateAll(trainingProgram: TrainingProgram, where?: Where<TrainingProgram>): Promise<Count> {
+    return this.trainingProgramRepository.updateAll(trainingProgram, where);
+  }
+
+  async findById(id: number, filter?: FilterExcludingWhere<TrainingProgram>): Promise<TrainingProgram> {
+    return this.trainingProgramRepository.findById(id, filter);
+  }
+
+  async updateById(id: number, trainingProgram: TrainingProgram): Promise<void> {
+    await this.trainingProgramRepository.updateById(id, trainingProgram);
+  }
+
+  async replaceById(id: number, trainingProgram: TrainingProgram): Promise<void> {
+    await this.trainingProgramRepository.replaceById(id, trainingProgram);
+  }
+
+  async deleteById(id: number): Promise<void> {
+    await this.trainingProgramRepository.deleteById(id);
   }
 }
