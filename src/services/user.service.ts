@@ -1,9 +1,9 @@
 import {UserService as BaseUserService} from '@loopback/authentication';
 import {Credentials} from '@loopback/authentication-jwt';
 import {service} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
-import {UserProfile, securityId} from '@loopback/security';
+import {securityId, UserProfile} from '@loopback/security';
 import {compare} from 'bcryptjs';
 import log4js from 'log4js';
 import shortUUID from 'short-uuid';
@@ -88,5 +88,33 @@ export class UserService implements BaseUserService<Users, Credentials> {
     }
 
     return {success: 0, message: 'This email has been used'}
+  }
+
+  async findUser(filter?: Filter<Users>): Promise<Users[]> {
+    return this.userRepository.find(filter);
+  }
+
+  async findUserById(id: string, filter?: FilterExcludingWhere<Users>): Promise<Users> {
+    return this.userRepository.findById(id, filter);
+  }
+
+  async updateUserById(id: string, users: Users): Promise<void> {
+    await this.userRepository.updateById(id, users);
+  }
+
+  async deleteUserById(id: string): Promise<void> {
+    await this.userRepository.deleteById(id);
+  }
+
+  async count(where?: Where<Users>): Promise<Count> {
+    return this.userRepository.count(where);
+  }
+
+  async updateAll(users: Users, where?: Where<Users>): Promise<Count> {
+    return this.userRepository.updateAll(users, where);
+  }
+
+  async replaceById(id: string, users: Users): Promise<void> {
+    await this.userRepository.replaceById(id, users);
   }
 }

@@ -6,8 +6,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -23,13 +22,10 @@ import {
 import {CredentialsRequestBody} from '../common/models/request';
 import {BaseReponse, LoginRS} from '../common/models/response';
 import {Users} from '../models';
-import {UsersRepository} from '../repositories';
 import {JwtService, UserService} from '../services';
 
 export class UserController {
   constructor(
-    @repository(UsersRepository)
-    public usersRepository: UsersRepository,
     @inject(UserServiceBindings.USER_SERVICE)
     private userService: UserService,
     @inject(TokenServiceBindings.TOKEN_SERVICE)
@@ -101,7 +97,7 @@ export class UserController {
   async count(
     @param.where(Users) where?: Where<Users>,
   ): Promise<Count> {
-    return this.usersRepository.count(where);
+    return this.userService.count(where);
   }
 
   @get('/users')
@@ -120,31 +116,7 @@ export class UserController {
   async find(
     @param.filter(Users) filter?: Filter<Users>,
   ): Promise<Users[]> {
-    return this.usersRepository.find(filter);
-  }
-
-  @get('/users/info')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Array of Users model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Users, {includeRelations: true}),
-        },
-      },
-    },
-  })
-  async getUserInfo(
-  ): Promise<Users[]> {
-    return this.usersRepository.find({
-      fields: {
-        password: false,
-        username: false,
-        email: false,
-      }
-    });
+    return this.userService.findUser(filter);
   }
 
   @patch('/users')
@@ -164,7 +136,7 @@ export class UserController {
     users: Users,
     @param.where(Users) where?: Where<Users>,
   ): Promise<Count> {
-    return this.usersRepository.updateAll(users, where);
+    return this.userService.updateAll(users, where);
   }
 
   @get('/users/{id}')
@@ -181,7 +153,7 @@ export class UserController {
     @param.path.number('id') id: string,
     @param.filter(Users, {exclude: 'where'}) filter?: FilterExcludingWhere<Users>
   ): Promise<Users> {
-    return this.usersRepository.findById(id, filter);
+    return this.userService.findUserById(id, filter);
   }
 
   @patch('/users/{id}')
@@ -200,7 +172,7 @@ export class UserController {
     })
     users: Users,
   ): Promise<void> {
-    await this.usersRepository.updateById(id, users);
+    await this.userService.updateUserById(id, users);
   }
 
   @put('/users/{id}')
@@ -212,7 +184,7 @@ export class UserController {
     @param.path.number('id') id: string,
     @requestBody() users: Users,
   ): Promise<void> {
-    await this.usersRepository.replaceById(id, users);
+    await this.userService.replaceById(id, users);
   }
 
   @del('/users/{id}')
@@ -221,6 +193,6 @@ export class UserController {
     description: 'Users DELETE success',
   })
   async deleteById(@param.path.number('id') id: string): Promise<void> {
-    await this.usersRepository.deleteById(id);
+    await this.userService.deleteUserById(id);
   }
 }
