@@ -1,7 +1,7 @@
 import fs from 'fs';
 import yaml from 'js-yaml';
 import {ImsApiApplication} from '../application';
-import {Role} from '../common/type';
+import {Role} from '../common';
 import {FeedbackRepository, InternRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
 
 export default async function (app: ImsApiApplication) {

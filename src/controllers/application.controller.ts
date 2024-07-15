@@ -23,8 +23,8 @@ import {
   RestBindings
 } from '@loopback/rest';
 import multer from 'multer';
+import {FileUploadHandler} from '../common';
 import {ApplyApplication} from '../common/models/request';
-import {FileUploadHandler} from '../common/type';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 import {Application} from '../models';
 import {ApplicationRepository} from '../repositories';

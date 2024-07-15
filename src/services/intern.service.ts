@@ -1,7 +1,7 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
+import {Role} from '../common';
 import {CreateInternRQ} from '../common/models/request';
-import {Role} from '../common/type';
 import {Intern} from '../models';
 import {InternRepository, UsersRepository} from '../repositories';
 

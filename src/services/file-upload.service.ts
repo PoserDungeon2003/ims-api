@@ -1,7 +1,7 @@
 import { /* inject, */ BindingScope, config, ContextTags, injectable, Provider} from '@loopback/core';
 import {Request} from '@loopback/rest';
 import multer from 'multer';
-import {FileUploadHandler} from '../common/type';
+import {FileUploadHandler} from '../common';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 
 @injectable({

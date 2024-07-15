@@ -1,8 +1,8 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
+import {Role} from '../common';
 import {CreateTasksRQ} from '../common/models/request';
-import {Role} from '../common/type';
 import {Tasks} from '../models';
 import {InternTaskRepository, TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
 

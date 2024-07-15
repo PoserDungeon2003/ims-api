@@ -1,7 +1,7 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
+import {Role} from '../common';
 import {CreateTrainingProgramRQ} from '../common/models/request';
-import {Role} from '../common/type';
 import {TrainingProgram} from '../models';
 import {TrainingProgramRepository, UsersRepository} from '../repositories';
 
