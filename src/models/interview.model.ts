@@ -46,7 +46,7 @@ export class Interview extends TimeStampMixin(Entity) {
   status?: 'pending' | 'accepted' | 'rejected';
 
   @belongsTo(() => Users)
-  usersId: number;
+  usersId: string;
 
   @belongsTo(() => Application)
   applicationId: number;

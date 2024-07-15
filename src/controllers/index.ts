@@ -9,3 +9,4 @@ export * from './work-result.controller';
 
 export * from './application.controller';
 export * from './task-management.controller';
+export * from './interview.controller';

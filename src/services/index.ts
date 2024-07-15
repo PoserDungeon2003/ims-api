@@ -9,3 +9,6 @@ export * from './task.service';
 export * from './training-program.service';
 export * from './user.service';
 
+export * from './application.service';
+export * from './interview.service';
+export * from './work-result.service';
