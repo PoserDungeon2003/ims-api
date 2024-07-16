@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -7,13 +8,13 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -23,10 +24,11 @@ import {InterviewRepository} from '../repositories';
 export class InterviewController {
   constructor(
     @repository(InterviewRepository)
-    public interviewRepository : InterviewRepository,
-  ) {}
+    public interviewRepository: InterviewRepository,
+  ) { }
 
   @post('/interviews')
+  @authenticate('jwt')
   @response(200, {
     description: 'Interview model instance',
     content: {'application/json': {schema: getModelSchemaRef(Interview)}},
@@ -48,6 +50,7 @@ export class InterviewController {
   }
 
   @get('/interviews/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'Interview model count',
     content: {'application/json': {schema: CountSchema}},
@@ -59,6 +62,7 @@ export class InterviewController {
   }
 
   @get('/interviews')
+  @authenticate('jwt')
   @response(200, {
     description: 'Array of Interview model instances',
     content: {
@@ -77,6 +81,7 @@ export class InterviewController {
   }
 
   @patch('/interviews')
+  @authenticate('jwt')
   @response(200, {
     description: 'Interview PATCH success count',
     content: {'application/json': {schema: CountSchema}},
@@ -96,6 +101,7 @@ export class InterviewController {
   }
 
   @get('/interviews/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'Interview model instance',
     content: {
@@ -112,6 +118,7 @@ export class InterviewController {
   }
 
   @patch('/interviews/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Interview PATCH success',
   })
@@ -130,6 +137,7 @@ export class InterviewController {
   }
 
   @put('/interviews/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Interview PUT success',
   })
@@ -141,6 +149,7 @@ export class InterviewController {
   }
 
   @del('/interviews/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'Interview DELETE success',
   })
