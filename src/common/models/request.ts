@@ -148,13 +148,11 @@ export class ApplyApplication {
 
   @property({
     type: 'string',
-    format: 'binary',
   })
   resume?: string;
 
   @property({
     type: 'string',
-    format: 'binary',
   })
   coverLetter?: string;
 

@@ -24,7 +24,6 @@ import {
 } from '@loopback/rest';
 import multer from 'multer';
 import {FileUploadHandler} from '../common';
-import {ApplyApplication} from '../common/models/request';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 import {Application} from '../models';
 import {ApplicationRepository} from '../repositories';
@@ -43,23 +42,21 @@ export class ApplicationController {
   ) { }
 
   @post('/applications')
-  @response(200, {
-    description: 'Application model instance',
-    content: {'application/json': {schema: getModelSchemaRef(ApplyApplication)}},
-  })
+  @response(200)
   async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(ApplyApplication, {
-            title: 'NewApplication',
-          }),
-        },
-      },
-    })
-    application: ApplyApplication,
-  ): Promise<Application> {
-    return this.applicationService.create(application);
+    @requestBody.file()
+    request: Request,
+    @inject(RestBindings.Http.RESPONSE) response: Response,
+  ): Promise<object> {
+    const upload = multer({storage: multer.memoryStorage()}).array('resume');
+    return new Promise<object>((resolve, reject) => {
+      upload(request, response, err => {
+        if (err) reject(err);
+        else {
+          resolve(this.applicationService.create(request));
+        }
+      });
+    });
   }
 
   @get('/applications/count')
@@ -183,7 +180,7 @@ export class ApplicationController {
       upload(request, response, err => {
         if (err) reject(err);
         else {
-          resolve(this.firebaseService.uploadFileToStorage(request, response));
+          resolve(this.firebaseService.testUploadToFirebase(request, response));
         }
       });
     });

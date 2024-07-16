@@ -150,7 +150,7 @@ export class UserController {
     },
   })
   async findById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @param.filter(Users, {exclude: 'where'}) filter?: FilterExcludingWhere<Users>
   ): Promise<Users> {
     return this.userService.findUserById(id, filter);
@@ -162,7 +162,7 @@ export class UserController {
     description: 'Users PATCH success',
   })
   async updateById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
@@ -181,7 +181,7 @@ export class UserController {
     description: 'Users PUT success',
   })
   async replaceById(
-    @param.path.number('id') id: string,
+    @param.path.string('id') id: string,
     @requestBody() users: Users,
   ): Promise<void> {
     await this.userService.replaceById(id, users);
