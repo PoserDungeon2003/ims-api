@@ -8,7 +8,6 @@ import {compare} from 'bcryptjs';
 import log4js from 'log4js';
 import shortUUID from 'short-uuid';
 import {Role} from '../common';
-import {BaseReponse} from '../common/models/response';
 import {Users} from '../models';
 import {RolesRepository, UsersRepository} from '../repositories';
 import {PasswordHashService} from './password-hash.service';
@@ -60,7 +59,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
     }
   }
 
-  async createUser(userParams: Users): Promise<BaseReponse> {
+  async createUser(userParams: Users) {
     logger.debug('userParams', userParams)
 
     let user = await this.userRepository.findOne({
@@ -73,7 +72,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
         throw new HttpErrors[404]('Role not found')
       }
       try {
-        user = await this.userRepository.create({
+        let result = await this.userRepository.create({
           email: userParams.email.toLowerCase(),
           username: userParams.username?.toLowerCase(),
           fullName: userParams.fullName,
@@ -81,7 +80,7 @@ export class UserService implements BaseUserService<Users, Credentials> {
           password: await this.passwordHasher.hashPassword(userParams.password),
           rolesId: userParams.rolesId
         })
-        return {success: 1}
+        return result
       } catch (error) {
         throw new HttpErrors[500]('Create user failed')
       }
@@ -99,7 +98,10 @@ export class UserService implements BaseUserService<Users, Credentials> {
   }
 
   async updateUserById(id: string, users: Users): Promise<void> {
-    await this.userRepository.updateById(id, users);
+    await this.userRepository.updateById(id, {
+      ...users,
+      password: await this.passwordHasher.hashPassword(users.password)
+    });
   }
 
   async deleteUserById(id: string): Promise<void> {

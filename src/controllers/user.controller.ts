@@ -20,7 +20,7 @@ import {
   response,
 } from '@loopback/rest';
 import {CredentialsRequestBody} from '../common/models/request';
-import {BaseReponse, LoginRS} from '../common/models/response';
+import {LoginRS} from '../common/models/response';
 import {Users} from '../models';
 import {JwtService, UserService} from '../services';
 
@@ -49,7 +49,7 @@ export class UserController {
         },
       },
     }) users: Users,
-  ): Promise<BaseReponse> {
+  ) {
     try {
       return await this.userService.createUser(users);
     } catch (error) {
@@ -192,7 +192,7 @@ export class UserController {
   @response(204, {
     description: 'Users DELETE success',
   })
-  async deleteById(@param.path.number('id') id: string): Promise<void> {
+  async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.userService.deleteUserById(id);
   }
 }
