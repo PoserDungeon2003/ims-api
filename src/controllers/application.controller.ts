@@ -28,7 +28,7 @@ import {ApplyApplication} from '../common/models/request';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 import {Application} from '../models';
 import {ApplicationRepository} from '../repositories';
-import {FileUploadService, FirebaseService} from '../services';
+import {ApplicationService, FileUploadService, FirebaseService} from '../services';
 
 export class ApplicationController {
   constructor(
@@ -38,29 +38,28 @@ export class ApplicationController {
     private firebaseService: FirebaseService,
     @inject(FILE_UPLOAD_SERVICE)
     private handler: FileUploadHandler,
-    // @service(FileService)
-    // private fileService: FileService
+    @service(ApplicationService)
+    private applicationService: ApplicationService,
   ) { }
 
   @post('/applications')
-  @authenticate('jwt')
   @response(200, {
     description: 'Application model instance',
-    content: {'multipart/form-data': {schema: getModelSchemaRef(ApplyApplication)}},
+    content: {'application/json': {schema: getModelSchemaRef(ApplyApplication)}},
   })
   async create(
     @requestBody({
       content: {
-        'multipart/form-data': {
+        'application/json': {
           schema: getModelSchemaRef(ApplyApplication, {
             title: 'NewApplication',
           }),
         },
       },
     })
-    application: Omit<Application, 'id'>,
+    application: ApplyApplication,
   ): Promise<Application> {
-    return this.applicationRepository.create(application);
+    return this.applicationService.create(application);
   }
 
   @get('/applications/count')

@@ -33,7 +33,7 @@ export class Application extends TimeStampMixin(Entity) {
     type: 'string',
     required: true,
   })
-  resume: string;
+  resume?: string;
 
   @property({
     type: 'string',
