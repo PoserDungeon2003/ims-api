@@ -1,4 +1,5 @@
 import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -20,11 +21,14 @@ import {
 } from '@loopback/rest';
 import {WorkResult} from '../models';
 import {WorkResultRepository} from '../repositories';
+import {WorkResultService} from '../services';
 
 export class WorkResultController {
   constructor(
     @repository(WorkResultRepository)
     public workResultRepository: WorkResultRepository,
+    @service(WorkResultService)
+    private workResultService: WorkResultService,
   ) { }
 
   @post('/work-results')
@@ -45,8 +49,8 @@ export class WorkResultController {
       },
     })
     workResult: Omit<WorkResult, 'id'>,
-  ): Promise<WorkResult> {
-    return this.workResultRepository.create(workResult);
+  ) {
+    return this.workResultService.addNewWorkResult(workResult);
   }
 
   @get('/work-results/count')
