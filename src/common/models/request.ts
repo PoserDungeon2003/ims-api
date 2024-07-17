@@ -168,3 +168,46 @@ export class ApplyApplication {
   })
   status?: 'pending' | 'accepted' | 'rejected';
 }
+
+@model()
+export class CreateInterview {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  intervieweeName: string;
+
+  @property({
+    type: 'date',
+    defaultFn: 'now',
+  })
+  time?: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  location: string;
+
+  @property({
+    type: 'string',
+  })
+  quiz?: string;
+
+  @property({
+    type: 'string',
+    required: false,
+    default: 'pending',
+  })
+  status?: 'pending' | 'accepted' | 'rejected';
+
+  @property({
+    type: 'string',
+  })
+  usersId: string;
+
+  @property({
+    type: 'number',
+  })
+  applicationId: number;
+}

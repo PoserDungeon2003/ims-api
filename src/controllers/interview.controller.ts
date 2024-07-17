@@ -1,4 +1,5 @@
 import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
@@ -18,35 +19,38 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {CreateInterview} from '../common/models/request';
 import {Interview} from '../models';
 import {InterviewRepository} from '../repositories';
+import {InterviewService} from '../services';
 
 export class InterviewController {
   constructor(
     @repository(InterviewRepository)
     public interviewRepository: InterviewRepository,
+    @service(InterviewService)
+    private interviewService: InterviewService,
   ) { }
 
   @post('/interviews')
   @authenticate('jwt')
   @response(200, {
     description: 'Interview model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Interview)}},
+    content: {'application/json': {schema: getModelSchemaRef(CreateInterview)}},
   })
   async create(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Interview, {
+          schema: getModelSchemaRef(CreateInterview, {
             title: 'NewInterview',
-            exclude: ['id'],
           }),
         },
       },
     })
-    interview: Omit<Interview, 'id'>,
-  ): Promise<Interview> {
-    return this.interviewRepository.create(interview);
+    interview: CreateInterview,
+  ) {
+    return this.interviewService.create(interview);
   }
 
   @get('/interviews/count')
