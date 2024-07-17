@@ -2,7 +2,28 @@ import {Entity, hasMany, model, property} from '@loopback/repository';
 import {TimeStampMixin} from '../mixins';
 import {Interview} from './interview.model';
 
-@model()
+@model({
+  settings: {
+    indexes: {
+      application_email_idx: {
+        keys: {
+          email: 1,
+        },
+        options: {
+          unique: true,
+        },
+      },
+      application_phone_idx: {
+        keys: {
+          phone: -1,
+        },
+        options: {
+          unique: true,
+        },
+      },
+    },
+  }
+})
 export class Application extends TimeStampMixin(Entity) {
   @property({
     type: 'number',

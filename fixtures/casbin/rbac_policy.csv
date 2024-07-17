@@ -3,7 +3,7 @@ p, guestRole, users, find|count|login|
 p, guestRole, , index|indexRedirect|spec
 p, guestRole, applications, create
 g, guest, guestRole
-p, HRManagerRole, applications, .*
+p, HRManagerRole, applications, find|count|findById|updateById|deleteById
 p, HRManagerRole, feedbacks, .*
 g, HRManager, HRManagerRole
 p, MentorRole, tasks, .*
@@ -11,7 +11,7 @@ p, MentorRole, taskmanagements, .*
 p, MentorRole, feedback, find
 p, MentorRole, intern, find|count
 p, MentorRole, users, find|count
-p, MentorRole, trainingprograms, find|count
+p, MentorRole, trainingprograms, find|count|create|updateById|deleteById
 g, Mentor, MentorRole
 p, CoordinatorRole, trainingprograms, .*
 p, CoordinatorRole, users, find|count

@@ -70,7 +70,11 @@ export class TrainingProgramService {
   }
 
   async updateById(id: number, trainingProgram: TrainingProgram): Promise<void> {
-    await this.trainingProgramRepository.updateById(id, trainingProgram);
+    let user = await this.usersRepository.findById(trainingProgram.usersId)
+    await this.trainingProgramRepository.updateById(id, {
+      ...trainingProgram,
+      createdBy: user.fullName
+    });
   }
 
   async replaceById(id: number, trainingProgram: TrainingProgram): Promise<void> {

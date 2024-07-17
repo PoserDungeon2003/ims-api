@@ -6,7 +6,28 @@ import {TrainingProgram} from './training-program.model';
 import {Users} from './users.model';
 import {WorkResult} from './work-result.model';
 
-@model()
+@model({
+  settings: {
+    indexes: {
+      intern_email_idx: {
+        keys: {
+          email: 1,
+        },
+        options: {
+          unique: true,
+        },
+      },
+      intern_phone_idx: {
+        keys: {
+          phone: -1,
+        },
+        options: {
+          unique: true,
+        },
+      },
+    },
+  }
+})
 export class Intern extends Entity {
   @property({
     type: 'number',
