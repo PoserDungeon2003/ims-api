@@ -1,87 +1,116 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Count, Filter, FilterExcludingWhere, Where, repository} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
 import {Role} from '../common';
-import {CreateTrainingProgramRQ} from '../common/models/request';
-import {TrainingProgram} from '../models';
-import {TrainingProgramRepository, UsersRepository} from '../repositories';
+import {CreateTasksRQ} from '../common/models/request';
+import {Tasks} from '../models';
+import {InternTaskRepository, TasksRepository, TrainingProgramRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
-export class TrainingProgramService {
+export class TaskService {
   constructor(
+    @repository(TasksRepository)
+    private tasksRepository: TasksRepository,
+    @repository(UsersRepository)
+    private usersRepository: UsersRepository,
     @repository(TrainingProgramRepository)
     private trainingProgramRepository: TrainingProgramRepository,
-    @repository(UsersRepository)
-    private usersRepository: UsersRepository
+    @repository(InternTaskRepository)
+    private internTaskRepository: InternTaskRepository
   ) { }
 
-  async createTrainingProgram(trainingProgramRQ: CreateTrainingProgramRQ) {
-    let user = await this.usersRepository.findOne({
+  async createTasks(task: CreateTasksRQ) {
+    let trainingProgram = await this.trainingProgramRepository.findOne({
       where: {
-        id: trainingProgramRQ.usersId
+        id: task.trainingProgramId
       }
     })
 
-    if (!user) {
+    if (!trainingProgram) {
       return {
         success: 0,
-        message: "User not found"
+        message: "Training program not found"
       }
     }
 
-    if (user.rolesId !== Role.Coordinator) {
+    let mentor = await this.usersRepository.findOne({
+      where: {
+        id: task.usersId
+      }
+    })
+
+    if (mentor?.rolesId !== Role.Mentor) {
       return {
         success: 0,
-        message: "User is not coordinator"
+        message: "User is not mentor"
       }
     }
+
     try {
-      let trainingProgram = await this.trainingProgramRepository.create({
-        ...trainingProgramRQ,
-        createdBy: user.fullName,
-        usersId: user.id
+      let response = await this.tasksRepository.create({
+        name: task.name,
+        description: task.description,
+        trainingProgramId: trainingProgram.id,
+        usersId: mentor?.id
       })
-      if (trainingProgram) {
-        return trainingProgram
+      if (response) {
+        return response
       }
-      else {
-        return {success: 0, message: "Create training program failed"}
+      return {
+        success: 0,
+        message: "Create task failed"
       }
     } catch (error) {
       return {success: 0, message: error}
     }
   }
 
-  async count(where?: Where<TrainingProgram>
-  ): Promise<Count> {
-    return this.trainingProgramRepository.count(where);
+  async getCompletionRated(): Promise<number> {
+    try {
+      let completedTasks = await this.internTaskRepository.find({
+        where: {
+          isCompleted: true
+        }
+      })
+      let allAssignedTasks = await this.internTaskRepository.find()
+
+      if (allAssignedTasks.length === 0) {
+        return 0
+      }
+      return completedTasks.length / allAssignedTasks.length
+
+    } catch (error) {
+      throw new HttpErrors[500]("Internal server error")
+    }
+
+
   }
 
-  async findByFilter(filter?: Filter<TrainingProgram>,
-  ): Promise<TrainingProgram[]> {
-    return this.trainingProgramRepository.find(filter);
+  async count(where?: Where<Tasks>): Promise<Count> {
+    return this.tasksRepository.count(where);
   }
 
-  async updateAll(trainingProgram: TrainingProgram, where?: Where<TrainingProgram>): Promise<Count> {
-    return this.trainingProgramRepository.updateAll(trainingProgram, where);
+  async findTask(filter?: Filter<Tasks>): Promise<Tasks[]> {
+    return this.tasksRepository.find(filter);
   }
 
-  async findById(id: number, filter?: FilterExcludingWhere<TrainingProgram>): Promise<TrainingProgram> {
-    return this.trainingProgramRepository.findById(id, filter);
+  async updateAll(tasks: Tasks, where?: Where<Tasks>): Promise<Count> {
+    return this.tasksRepository.updateAll(tasks, where);
   }
 
-  async updateById(id: number, trainingProgram: TrainingProgram): Promise<void> {
-    let user = await this.usersRepository.findById(trainingProgram.usersId)
-    await this.trainingProgramRepository.updateById(id, {
-      ...trainingProgram,
-      createdBy: user.fullName
-    });
+  async findTaskById(id: number, filter?: FilterExcludingWhere<Tasks>): Promise<Tasks> {
+    return this.tasksRepository.findById(id, filter);
   }
 
-  async replaceById(id: number, trainingProgram: TrainingProgram): Promise<void> {
-    await this.trainingProgramRepository.replaceById(id, trainingProgram);
+  async updateTaskById(id: number, tasks: Tasks): Promise<void> {
+    await this.tasksRepository.updateById(id, tasks);
   }
 
-  async deleteById(id: number): Promise<void> {
-    await this.trainingProgramRepository.deleteById(id);
+  async replaceById(id: number, tasks: Tasks): Promise<void> {
+    await this.tasksRepository.replaceById(id, tasks);
+  }
+
+  async deleteTaskById(id: number): Promise<void> {
+    await this.tasksRepository.deleteById(id);
   }
 }
