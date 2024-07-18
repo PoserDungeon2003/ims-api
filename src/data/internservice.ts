@@ -1,38 +1,25 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Count, Filter, FilterExcludingWhere, Where, repository} from '@loopback/repository';
 import {Role} from '../common';
-import {CreateInternRQ} from '../common/models/request';
-import {Intern} from '../models';
-import {InternRepository, UsersRepository} from '../repositories';
+import {CreateTrainingProgramRQ} from '../common/models/request';
+import {TrainingProgram} from '../models';
+import {TrainingProgramRepository, UsersRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
-export class InternService {
+export class TrainingProgramService {
   constructor(
-    @repository(InternRepository)
-    private internRepository: InternRepository,
+    @repository(TrainingProgramRepository)
+    private trainingProgramRepository: TrainingProgramRepository,
     @repository(UsersRepository)
-    private usersRepository: UsersRepository,
+    private usersRepository: UsersRepository
   ) { }
 
-  async createIntern(internRQ: CreateInternRQ) {
+  async createTrainingProgram(trainingProgramRQ: CreateTrainingProgramRQ) {
     let user = await this.usersRepository.findOne({
       where: {
-        id: internRQ.usersId
+        id: trainingProgramRQ.usersId
       }
     })
-
-    let intern = await this.internRepository.findOne({
-      where: {
-        email: internRQ.email
-      }
-    });
-
-    if (intern) {
-      return {
-        success: 0,
-        message: "Duplicate email"
-      }
-    }
 
     if (!user) {
       return {
@@ -41,57 +28,60 @@ export class InternService {
       }
     }
 
-    if (user.rolesId !== Role.Mentor) {
+    if (user.rolesId !== Role.Coordinator) {
       return {
         success: 0,
-        message: "User is not mentor"
+        message: "User is not coordinator"
       }
     }
-
     try {
-      let result = await this.internRepository.create({
-        email: internRQ.email,
-        experiences: internRQ.experiences,
-        fullName: internRQ.fullName,
-        major: internRQ.major,
-        phone: internRQ.phone,
-        University: internRQ.University,
+      let trainingProgram = await this.trainingProgramRepository.create({
+        ...trainingProgramRQ,
+        createdBy: user.fullName,
         usersId: user.id
       })
-      if (result) {
-        return result
+      if (trainingProgram) {
+        return trainingProgram
       }
-      return {success: 0, message: "Create intern failed"}
+      else {
+        return {success: 0, message: "Create training program failed"}
+      }
     } catch (error) {
       return {success: 0, message: error}
     }
   }
 
-  async count(where?: Where<Intern>): Promise<Count> {
-    return this.internRepository.count(where);
+  async count(where?: Where<TrainingProgram>
+  ): Promise<Count> {
+    return this.trainingProgramRepository.count(where);
   }
 
-  async getInternByFilter(filter?: Filter<Intern>): Promise<Intern[]> {
-    return this.internRepository.find(filter);
+  async findByFilter(filter?: Filter<TrainingProgram>,
+  ): Promise<TrainingProgram[]> {
+    return this.trainingProgramRepository.find(filter);
   }
 
-  async updateAll(intern: Intern, where?: Where<Intern>): Promise<Count> {
-    return this.internRepository.updateAll(intern, where);
+  async updateAll(trainingProgram: TrainingProgram, where?: Where<TrainingProgram>): Promise<Count> {
+    return this.trainingProgramRepository.updateAll(trainingProgram, where);
   }
 
-  async findById(id: number, filter?: FilterExcludingWhere<Intern>): Promise<Intern> {
-    return this.internRepository.findById(id, filter);
+  async findById(id: number, filter?: FilterExcludingWhere<TrainingProgram>): Promise<TrainingProgram> {
+    return this.trainingProgramRepository.findById(id, filter);
   }
 
-  async updateInternById(id: number, intern: Intern): Promise<void> {
-    await this.internRepository.updateById(id, intern);
+  async updateById(id: number, trainingProgram: TrainingProgram): Promise<void> {
+    let user = await this.usersRepository.findById(trainingProgram.usersId)
+    await this.trainingProgramRepository.updateById(id, {
+      ...trainingProgram,
+      createdBy: user.fullName
+    });
   }
 
-  async replaceById(id: number, intern: Intern): Promise<void> {
-    await this.internRepository.replaceById(id, intern);
+  async replaceById(id: number, trainingProgram: TrainingProgram): Promise<void> {
+    await this.trainingProgramRepository.replaceById(id, trainingProgram);
   }
 
-  async removeIntern(id: number): Promise<void> {
-    await this.internRepository.deleteById(id);
+  async deleteById(id: number): Promise<void> {
+    await this.trainingProgramRepository.deleteById(id);
   }
 }
