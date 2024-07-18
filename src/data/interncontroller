@@ -1,159 +1,97 @@
-import {authenticate} from '@loopback/authentication';
-import {
-  Count,
-  CountSchema,
-  Filter,
-  FilterExcludingWhere,
-  repository,
-  Where,
-} from '@loopback/repository';
-import {
-  del,
-  get,
-  getModelSchemaRef,
-  param,
-  patch,
-  post,
-  put,
-  requestBody,
-  response,
-} from '@loopback/rest';
-import {Roles} from '../models';
-import {RolesRepository} from '../repositories';
+import { /* inject, */ BindingScope, injectable} from '@loopback/core';
+import {Count, Filter, FilterExcludingWhere, Where, repository} from '@loopback/repository';
+import {Role} from '../common';
+import {CreateInternRQ} from '../common/models/request';
+import {Intern} from '../models';
+import {InternRepository, UsersRepository} from '../repositories';
 
-export class RolesController {
+@injectable({scope: BindingScope.TRANSIENT})
+export class InternService {
   constructor(
-    @repository(RolesRepository)
-    public rolesRepository: RolesRepository,
+    @repository(InternRepository)
+    private internRepository: InternRepository,
+    @repository(UsersRepository)
+    private usersRepository: UsersRepository,
   ) { }
 
-  @post('/roles')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Roles model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Roles)}},
-  })
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Roles, {
-            title: 'NewRoles',
-            exclude: ['id'],
-          }),
-        },
-      },
+  async createIntern(internRQ: CreateInternRQ) {
+    let user = await this.usersRepository.findOne({
+      where: {
+        id: internRQ.usersId
+      }
     })
-    roles: Omit<Roles, 'id'>,
-  ): Promise<Roles> {
-    return this.rolesRepository.create(roles);
+
+    let intern = await this.internRepository.findOne({
+      where: {
+        email: internRQ.email
+      }
+    });
+
+    if (intern) {
+      return {
+        success: 0,
+        message: "Duplicate email"
+      }
+    }
+
+    if (!user) {
+      return {
+        success: 0,
+        message: "User not found"
+      }
+    }
+
+    if (user.rolesId !== Role.Mentor) {
+      return {
+        success: 0,
+        message: "User is not mentor"
+      }
+    }
+
+    try {
+      let result = await this.internRepository.create({
+        email: internRQ.email,
+        experiences: internRQ.experiences,
+        fullName: internRQ.fullName,
+        major: internRQ.major,
+        phone: internRQ.phone,
+        University: internRQ.University,
+        usersId: user.id
+      })
+      if (result) {
+        return result
+      }
+      return {success: 0, message: "Create intern failed"}
+    } catch (error) {
+      return {success: 0, message: error}
+    }
   }
 
-  @get('/roles/count')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Roles model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(Roles) where?: Where<Roles>,
-  ): Promise<Count> {
-    return this.rolesRepository.count(where);
+  async count(where?: Where<Intern>): Promise<Count> {
+    return this.internRepository.count(where);
   }
 
-  @get('/roles')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Array of Roles model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Roles, {includeRelations: true}),
-        },
-      },
-    },
-  })
-  async find(
-    @param.filter(Roles) filter?: Filter<Roles>,
-  ): Promise<Roles[]> {
-    return this.rolesRepository.find(filter);
+  async getInternByFilter(filter?: Filter<Intern>): Promise<Intern[]> {
+    return this.internRepository.find(filter);
   }
 
-  @patch('/roles')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Roles PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Roles, {partial: true}),
-        },
-      },
-    })
-    roles: Roles,
-    @param.where(Roles) where?: Where<Roles>,
-  ): Promise<Count> {
-    return this.rolesRepository.updateAll(roles, where);
+  async updateAll(intern: Intern, where?: Where<Intern>): Promise<Count> {
+    return this.internRepository.updateAll(intern, where);
   }
 
-  @get('/roles/{id}')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Roles model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Roles, {includeRelations: true}),
-      },
-    },
-  })
-  async findById(
-    @param.path.number('id') id: number,
-    @param.filter(Roles, {exclude: 'where'}) filter?: FilterExcludingWhere<Roles>
-  ): Promise<Roles> {
-    return this.rolesRepository.findById(id, filter);
+  async findById(id: number, filter?: FilterExcludingWhere<Intern>): Promise<Intern> {
+    return this.internRepository.findById(id, filter);
   }
 
-  @patch('/roles/{id}')
-  @authenticate('jwt')
-  @response(204, {
-    description: 'Roles PATCH success',
-  })
-  async updateById(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Roles, {partial: true}),
-        },
-      },
-    })
-    roles: Roles,
-  ): Promise<void> {
-    await this.rolesRepository.updateById(id, roles);
+  async updateInternById(id: number, intern: Intern): Promise<void> {
+    await this.internRepository.updateById(id, intern);
   }
 
-  @put('/roles/{id}')
-  @authenticate('jwt')
-  @response(204, {
-    description: 'Roles PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() roles: Roles,
-  ): Promise<void> {
-    await this.rolesRepository.replaceById(id, roles);
+  async replaceById(id: number, intern: Intern): Promise<void> {
+    await this.internRepository.replaceById(id, intern);
   }
 
-  @del('/roles/{id}')
-  @authenticate('jwt')
-  @response(204, {
-    description: 'Roles DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.rolesRepository.deleteById(id);
+  async removeIntern(id: number): Promise<void> {
+    await this.internRepository.deleteById(id);
   }
 }
