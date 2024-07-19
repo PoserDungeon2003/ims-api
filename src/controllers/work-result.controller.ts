@@ -5,8 +5,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -20,13 +19,10 @@ import {
   response,
 } from '@loopback/rest';
 import {WorkResult} from '../models';
-import {WorkResultRepository} from '../repositories';
 import {WorkResultService} from '../services';
 
 export class WorkResultController {
   constructor(
-    @repository(WorkResultRepository)
-    public workResultRepository: WorkResultRepository,
     @service(WorkResultService)
     private workResultService: WorkResultService,
   ) { }
@@ -62,7 +58,7 @@ export class WorkResultController {
   async count(
     @param.where(WorkResult) where?: Where<WorkResult>,
   ): Promise<Count> {
-    return this.workResultRepository.count(where);
+    return this.workResultService.count(where);
   }
 
   @get('/work-results')
@@ -81,7 +77,7 @@ export class WorkResultController {
   async find(
     @param.filter(WorkResult) filter?: Filter<WorkResult>,
   ): Promise<WorkResult[]> {
-    return this.workResultRepository.find(filter);
+    return this.workResultService.find(filter);
   }
 
   @patch('/work-results')
@@ -101,7 +97,7 @@ export class WorkResultController {
     workResult: WorkResult,
     @param.where(WorkResult) where?: Where<WorkResult>,
   ): Promise<Count> {
-    return this.workResultRepository.updateAll(workResult, where);
+    return this.workResultService.updateAll(workResult, where);
   }
 
   @get('/work-results/{id}')
@@ -118,7 +114,7 @@ export class WorkResultController {
     @param.path.number('id') id: number,
     @param.filter(WorkResult, {exclude: 'where'}) filter?: FilterExcludingWhere<WorkResult>
   ): Promise<WorkResult> {
-    return this.workResultRepository.findById(id, filter);
+    return this.workResultService.findById(id, filter);
   }
 
   @patch('/work-results/{id}')
@@ -137,7 +133,7 @@ export class WorkResultController {
     })
     workResult: WorkResult,
   ): Promise<void> {
-    await this.workResultRepository.updateById(id, workResult);
+    await this.workResultService.updateById(id, workResult);
   }
 
   @put('/work-results/{id}')
@@ -149,7 +145,7 @@ export class WorkResultController {
     @param.path.number('id') id: number,
     @requestBody() workResult: WorkResult,
   ): Promise<void> {
-    await this.workResultRepository.replaceById(id, workResult);
+    await this.workResultService.replaceById(id, workResult);
   }
 
   @del('/work-results/{id}')
@@ -158,6 +154,6 @@ export class WorkResultController {
     description: 'WorkResult DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.workResultRepository.deleteById(id);
+    await this.workResultService.deleteById(id);
   }
 }

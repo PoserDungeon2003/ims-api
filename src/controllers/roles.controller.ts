@@ -1,11 +1,11 @@
 import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -19,12 +19,12 @@ import {
   response,
 } from '@loopback/rest';
 import {Roles} from '../models';
-import {RolesRepository} from '../repositories';
+import {RoleService} from '../services';
 
 export class RolesController {
   constructor(
-    @repository(RolesRepository)
-    public rolesRepository: RolesRepository,
+    @service(RoleService)
+    private roleService: RoleService,
   ) { }
 
   @post('/roles')
@@ -46,7 +46,7 @@ export class RolesController {
     })
     roles: Omit<Roles, 'id'>,
   ): Promise<Roles> {
-    return this.rolesRepository.create(roles);
+    return this.roleService.create(roles);
   }
 
   @get('/roles/count')
@@ -58,7 +58,7 @@ export class RolesController {
   async count(
     @param.where(Roles) where?: Where<Roles>,
   ): Promise<Count> {
-    return this.rolesRepository.count(where);
+    return this.roleService.count(where);
   }
 
   @get('/roles')
@@ -77,7 +77,7 @@ export class RolesController {
   async find(
     @param.filter(Roles) filter?: Filter<Roles>,
   ): Promise<Roles[]> {
-    return this.rolesRepository.find(filter);
+    return this.roleService.find(filter);
   }
 
   @patch('/roles')
@@ -97,7 +97,7 @@ export class RolesController {
     roles: Roles,
     @param.where(Roles) where?: Where<Roles>,
   ): Promise<Count> {
-    return this.rolesRepository.updateAll(roles, where);
+    return this.roleService.updateAll(roles, where);
   }
 
   @get('/roles/{id}')
@@ -114,7 +114,7 @@ export class RolesController {
     @param.path.number('id') id: number,
     @param.filter(Roles, {exclude: 'where'}) filter?: FilterExcludingWhere<Roles>
   ): Promise<Roles> {
-    return this.rolesRepository.findById(id, filter);
+    return this.roleService.findById(id, filter);
   }
 
   @patch('/roles/{id}')
@@ -133,7 +133,7 @@ export class RolesController {
     })
     roles: Roles,
   ): Promise<void> {
-    await this.rolesRepository.updateById(id, roles);
+    await this.roleService.updateById(id, roles);
   }
 
   @put('/roles/{id}')
@@ -145,7 +145,7 @@ export class RolesController {
     @param.path.number('id') id: number,
     @requestBody() roles: Roles,
   ): Promise<void> {
-    await this.rolesRepository.replaceById(id, roles);
+    await this.roleService.replaceById(id, roles);
   }
 
   @del('/roles/{id}')
@@ -154,6 +154,6 @@ export class RolesController {
     description: 'Roles DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.rolesRepository.deleteById(id);
+    await this.roleService.deleteById(id);
   }
 }

@@ -5,8 +5,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -20,13 +19,10 @@ import {
   response,
 } from '@loopback/rest';
 import {InternTask} from '../models';
-import {InternTaskRepository} from '../repositories';
 import {InternTaskService, TaskService} from '../services';
 
 export class TaskManagementController {
   constructor(
-    @repository(InternTaskRepository)
-    public internTaskRepository: InternTaskRepository,
     @service(InternTaskService)
     private internTaskService: InternTaskService,
     @service(TaskService)
@@ -64,7 +60,7 @@ export class TaskManagementController {
   async count(
     @param.where(InternTask) where?: Where<InternTask>,
   ): Promise<Count> {
-    return this.internTaskRepository.count(where);
+    return this.internTaskService.count(where);
   }
 
   @get('/tasks-management')
@@ -83,7 +79,7 @@ export class TaskManagementController {
   async find(
     @param.filter(InternTask) filter?: Filter<InternTask>,
   ): Promise<InternTask[]> {
-    return this.internTaskRepository.find(filter);
+    return this.internTaskService.find(filter);
   }
 
   @patch('/tasks-management')
@@ -103,7 +99,7 @@ export class TaskManagementController {
     internTask: InternTask,
     @param.where(InternTask) where?: Where<InternTask>,
   ): Promise<Count> {
-    return this.internTaskRepository.updateAll(internTask, where);
+    return this.internTaskService.updateAll(internTask, where);
   }
 
   @get('/tasks-management/{id}')
@@ -120,7 +116,7 @@ export class TaskManagementController {
     @param.path.number('id') id: number,
     @param.filter(InternTask, {exclude: 'where'}) filter?: FilterExcludingWhere<InternTask>
   ): Promise<InternTask> {
-    return this.internTaskRepository.findById(id, filter);
+    return this.internTaskService.findById(id, filter);
   }
 
   @patch('/tasks-management/{id}')
@@ -139,7 +135,7 @@ export class TaskManagementController {
     })
     internTask: InternTask,
   ): Promise<void> {
-    await this.internTaskRepository.updateById(id, internTask);
+    await this.internTaskService.updateById(id, internTask);
   }
 
   @put('/tasks-management/{id}')
@@ -151,7 +147,7 @@ export class TaskManagementController {
     @param.path.number('id') id: number,
     @requestBody() internTask: InternTask,
   ): Promise<void> {
-    await this.internTaskRepository.replaceById(id, internTask);
+    await this.internTaskService.replaceById(id, internTask);
   }
 
   @del('/tasks-management/{id}')
@@ -160,7 +156,7 @@ export class TaskManagementController {
     description: 'InternTask DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.internTaskRepository.deleteById(id);
+    await this.internTaskService.deleteById(id);
   }
 
   @get('/tasks-management/completion-rate')

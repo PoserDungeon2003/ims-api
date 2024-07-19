@@ -1,5 +1,5 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {InternTask} from '../models';
 import {InternRepository, InternTaskRepository, TasksRepository} from '../repositories';
@@ -40,5 +40,33 @@ export class InternTaskService {
       console.log(error);
       throw new HttpErrors[500]("Internal server error");
     }
+  }
+
+  async count(where?: Where<InternTask>): Promise<Count> {
+    return this.internTaskRepository.count(where);
+  }
+
+  async find(filter?: Filter<InternTask>): Promise<InternTask[]> {
+    return this.internTaskRepository.find(filter);
+  }
+
+  async updateAll(internTask: InternTask, where?: Where<InternTask>): Promise<Count> {
+    return this.internTaskRepository.updateAll(internTask, where);
+  }
+
+  async findById(id: number, filter?: FilterExcludingWhere<InternTask>): Promise<InternTask> {
+    return this.internTaskRepository.findById(id, filter);
+  }
+
+  async updateById(id: number, internTask: InternTask): Promise<void> {
+    await this.internTaskRepository.updateById(id, internTask);
+  }
+
+  async replaceById(id: number, internTask: InternTask): Promise<void> {
+    await this.internTaskRepository.replaceById(id, internTask);
+  }
+
+  async deleteById(id: number): Promise<void> {
+    await this.internTaskRepository.deleteById(id);
   }
 }
