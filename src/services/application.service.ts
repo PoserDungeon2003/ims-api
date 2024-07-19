@@ -1,5 +1,5 @@
 import {BindingScope, injectable, service} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {HttpErrors, Request} from '@loopback/rest';
 import {ApplyApplication} from '../common/models/request';
 import {Application} from '../models';
@@ -42,5 +42,33 @@ export class ApplicationService {
       console.log('=====error', error);
       throw new HttpErrors[500]("Internal Server Error");
     }
+  }
+
+  async count(where?: Where<Application>): Promise<Count> {
+    return this.applicationRepository.count(where);
+  }
+
+  async find(filter?: Filter<Application>): Promise<Application[]> {
+    return this.applicationRepository.find(filter);
+  }
+
+  async updateAll(application: Application, where?: Where<Application>): Promise<Count> {
+    return this.applicationRepository.updateAll(application, where);
+  }
+
+  async findById(id: number, filter?: FilterExcludingWhere<Application>): Promise<Application> {
+    return this.applicationRepository.findById(id, filter);
+  }
+
+  async updateById(id: number, application: Application): Promise<void> {
+    await this.applicationRepository.updateById(id, application);
+  }
+
+  async replaceById(id: number, application: Application): Promise<void> {
+    await this.applicationRepository.replaceById(id, application);
+  }
+
+  async deleteById(id: number): Promise<void> {
+    await this.applicationRepository.deleteById(id);
   }
 }

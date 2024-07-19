@@ -5,8 +5,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -26,13 +25,10 @@ import multer from 'multer';
 import {FileUploadHandler} from '../common';
 import {FILE_UPLOAD_SERVICE} from '../keys';
 import {Application} from '../models';
-import {ApplicationRepository} from '../repositories';
 import {ApplicationService, FileUploadService, FirebaseService} from '../services';
 
 export class ApplicationController {
   constructor(
-    @repository(ApplicationRepository)
-    public applicationRepository: ApplicationRepository,
     @service(FirebaseService)
     private firebaseService: FirebaseService,
     @inject(FILE_UPLOAD_SERVICE)
@@ -68,7 +64,7 @@ export class ApplicationController {
   async count(
     @param.where(Application) where?: Where<Application>,
   ): Promise<Count> {
-    return this.applicationRepository.count(where);
+    return this.applicationService.count(where);
   }
 
   @get('/applications')
@@ -87,7 +83,7 @@ export class ApplicationController {
   async find(
     @param.filter(Application) filter?: Filter<Application>,
   ): Promise<Application[]> {
-    return this.applicationRepository.find(filter);
+    return this.applicationService.find(filter);
   }
 
   @patch('/applications')
@@ -107,7 +103,7 @@ export class ApplicationController {
     application: Application,
     @param.where(Application) where?: Where<Application>,
   ): Promise<Count> {
-    return this.applicationRepository.updateAll(application, where);
+    return this.applicationService.updateAll(application, where);
   }
 
   @get('/applications/{id}')
@@ -124,7 +120,7 @@ export class ApplicationController {
     @param.path.number('id') id: number,
     @param.filter(Application, {exclude: 'where'}) filter?: FilterExcludingWhere<Application>
   ): Promise<Application> {
-    return this.applicationRepository.findById(id, filter);
+    return this.applicationService.findById(id, filter);
   }
 
   @patch('/applications/{id}')
@@ -143,7 +139,7 @@ export class ApplicationController {
     })
     application: Application,
   ): Promise<void> {
-    await this.applicationRepository.updateById(id, application);
+    await this.applicationService.updateById(id, application);
   }
 
   @put('/applications/{id}')
@@ -155,7 +151,7 @@ export class ApplicationController {
     @param.path.number('id') id: number,
     @requestBody() application: Application,
   ): Promise<void> {
-    await this.applicationRepository.replaceById(id, application);
+    await this.applicationService.replaceById(id, application);
   }
 
   @del('/applications/{id}')
@@ -164,7 +160,7 @@ export class ApplicationController {
     description: 'Application DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.applicationRepository.deleteById(id);
+    await this.applicationService.deleteById(id);
   }
 
   @post('/file/upload')
