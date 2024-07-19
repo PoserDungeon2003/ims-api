@@ -4,20 +4,17 @@ import {
   Count,
   CountSchema,
   Filter,
-  FilterExcludingWhere,
   repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
-  del,
   get,
   getModelSchemaRef,
   param,
   patch,
   post,
-  put,
   requestBody,
-  response,
+  response
 } from '@loopback/rest';
 import {CreateInterview} from '../common/models/request';
 import {Interview} from '../models';
@@ -104,60 +101,5 @@ export class InterviewController {
     return this.interviewRepository.updateAll(interview, where);
   }
 
-  @get('/interviews/{id}')
-  @authenticate('jwt')
-  @response(200, {
-    description: 'Interview model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Interview, {includeRelations: true}),
-      },
-    },
-  })
-  async findById(
-    @param.path.number('id') id: number,
-    @param.filter(Interview, {exclude: 'where'}) filter?: FilterExcludingWhere<Interview>
-  ): Promise<Interview> {
-    return this.interviewRepository.findById(id, filter);
-  }
 
-  @patch('/interviews/{id}')
-  @authenticate('jwt')
-  @response(204, {
-    description: 'Interview PATCH success',
-  })
-  async updateById(
-    @param.path.number('id') id: number,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Interview, {partial: true}),
-        },
-      },
-    })
-    interview: Interview,
-  ): Promise<void> {
-    await this.interviewRepository.updateById(id, interview);
-  }
-
-  @put('/interviews/{id}')
-  @authenticate('jwt')
-  @response(204, {
-    description: 'Interview PUT success',
-  })
-  async replaceById(
-    @param.path.number('id') id: number,
-    @requestBody() interview: Interview,
-  ): Promise<void> {
-    await this.interviewRepository.replaceById(id, interview);
-  }
-
-  @del('/interviews/{id}')
-  @authenticate('jwt')
-  @response(204, {
-    description: 'Interview DELETE success',
-  })
-  async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.interviewRepository.deleteById(id);
-  }
 }
