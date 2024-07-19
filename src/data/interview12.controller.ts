@@ -160,4 +160,39 @@ export class InterviewController {
   async deleteById(@param.path.number('id') id: number): Promise<void> {
     await this.interviewRepository.deleteById(id);
   }
+
+
+  @put('/interviews/{id}')
+  @authenticate('jwt')
+  @response(204, {
+    description: 'Interview PUT success',
+  })
+  async replaceById1(
+    @param.path.number('id') id: number,
+    @requestBody() interview: Interview,
+  ): Promise<void> {
+    await this.interviewRepository.replaceById(id, interview);
+  }
+
+  @del('/interviews/{id}')
+  @authenticate('jwt')
+  @response(204, {
+    description: 'Interview DELETE success',
+  })
+  async deleteById2(@param.path.number('id') id: number): Promise<void> {
+    await this.interviewRepository.deleteById(id);
+  }
+
+  @put('/interviews/{id}')
+  @authenticate('jwt')
+  @response(204, {
+    description: 'Interview PUT success',
+  })
+  async replaceByIdx(
+    @param.path.number('id') id: number,
+    @requestBody() interview: Interview,
+  ): Promise<void> {
+    await this.interviewRepository.replaceById(id, interview);
+  }
+
 }
