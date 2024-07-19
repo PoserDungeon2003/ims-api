@@ -12,7 +12,9 @@ p, MentorRole, feedback, find
 p, MentorRole, intern, find|count
 p, MentorRole, users, find|count
 p, MentorRole, trainingprograms, find|count|create|updateById|deleteById
-g, Mentor, MentorRole
+p, MentorRole, workresults, .*
+p, MentorRole, interns, getInternByFilter|count|findById
+g, Mentor, MentorRole, .*
 p, CoordinatorRole, trainingprograms, .*
 p, CoordinatorRole, users, find|count
 g, Coordinator, CoordinatorRole

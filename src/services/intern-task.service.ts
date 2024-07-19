@@ -1,5 +1,6 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {repository} from '@loopback/repository';
+import {HttpErrors} from '@loopback/rest';
 import {InternTask} from '../models';
 import {InternRepository, InternTaskRepository, TasksRepository} from '../repositories';
 
@@ -25,16 +26,10 @@ export class InternTaskService {
         }
       })
       if (!intern || !task) {
-        return {
-          success: 0,
-          message: "Intern or task not found"
-        };
+        throw new HttpErrors[404]("Intern or task not found");
       }
       if (existedTask) {
-        return {
-          success: 0,
-          message: "Task already assigned to intern"
-        }
+        throw new HttpErrors[400]("Task already assigned to intern");
       }
       return await this.internTaskRepository.create({
         internId: request.internId,
@@ -43,10 +38,7 @@ export class InternTaskService {
       });
     } catch (error) {
       console.log(error);
-      return {
-        success: 0,
-        message: "Assign task failed"
-      }
+      throw new HttpErrors[500]("Internal server error");
     }
   }
 }
