@@ -1,7 +1,17 @@
 import {belongsTo, Entity, model, property} from '@loopback/repository';
 import {Users} from './users.model';
 
-@model()
+@model({
+  settings: {
+    indexes: {
+      job_position_name_idx: {
+        keys: {
+          name: 1,
+        }
+      },
+    },
+  }
+})
 export class JobPosition extends Entity {
   @property({
     type: 'number',
@@ -29,7 +39,7 @@ export class JobPosition extends Entity {
   description: string;
 
   @belongsTo(() => Users)
-  usersId: number;
+  usersId: string;
 
   constructor(data?: Partial<JobPosition>) {
     super(data);

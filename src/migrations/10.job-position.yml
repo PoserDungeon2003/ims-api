@@ -1,0 +1,25 @@
+- id: 1
+  name: Senior Software Engineer
+  status: open
+  description: Responsible for leading a team of developers, designing software architecture, and ensuring code quality.
+  username: michaelwilliams
+- id: 2
+  name: Full Stack Developer
+  status: open
+  description: Develop and maintain both front-end and back-end components, ensuring seamless integration and functionality.
+  username: lindajohnson
+- id: 3
+  name: Backend Developer
+  status: open
+  description: Focus on server-side logic, database management, and API development to support front-end applications.
+  username: robertbrown
+- id: 4
+  name: Frontend Developer
+  status: closed
+  description: Implement user interface designs, optimize web performance, and ensure a responsive user experience across devices.
+  username: janesmith
+- id: 5
+  name: DevOps Engineer
+  status: open
+  description: Automate deployment processes, manage infrastructure, and enhance system reliability and scalability.
+  username: johndoe
