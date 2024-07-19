@@ -23,10 +23,8 @@ export class ApplicationService {
       let result = await this.applicationRepository.create({
         appliedTo: application.appliedTo,
         fullName: fullName,
-        // coverLetter: uploadFile.downloadURL,
         email: application.email,
         phone: application.phone,
-        // resume: uploadFile.downloadURL,
         status: application.status,
       });
       if (result) {
@@ -35,6 +33,7 @@ export class ApplicationService {
 
         await this.applicationRepository.updateById(result.id, {
           resume: uploadFile.downloadURL,
+          coverLetter: uploadFile.downloadURL,
         })
       }
       return result;
@@ -69,6 +68,7 @@ export class ApplicationService {
   }
 
   async deleteById(id: number): Promise<void> {
+    await this.firebaseService.deleteFileFromStorage(id);
     await this.applicationRepository.deleteById(id);
   }
 }

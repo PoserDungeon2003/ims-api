@@ -3,9 +3,11 @@ p, guestRole, users, find|count|login|
 p, guestRole, , index|indexRedirect|spec
 p, guestRole, applications, create
 g, guest, guestRole
+p, HRManagerRole, interns, .*
 p, HRManagerRole, applications, find|count|findById|updateById|deleteById
 p, HRManagerRole, feedbacks, .*
 g, HRManager, HRManagerRole
+p, MentorRole, feedbacks, find|count|findById
 p, MentorRole, tasks, .*
 p, MentorRole, taskmanagements, .*
 p, MentorRole, feedback, find

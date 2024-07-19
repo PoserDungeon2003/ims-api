@@ -1,7 +1,7 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {HttpErrors, Request, Response} from '@loopback/rest';
 import {getApp} from "firebase/app";
-import {getDownloadURL, getStorage, ref, uploadBytes, UploadMetadata} from 'firebase/storage';
+import {deleteObject, getDownloadURL, getStorage, ref, uploadBytes, UploadMetadata} from 'firebase/storage';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class FirebaseService {
@@ -53,6 +53,18 @@ export class FirebaseService {
       name: targetFile.originalname,
       type: targetFile.mimetype,
       downloadURL: downloadUrl,
+    }
+  }
+
+  async deleteFileFromStorage(id: number): Promise<void> {
+    let firebaseApp = getApp()
+    let storage = getStorage(firebaseApp)
+
+    const storageRef = ref(storage, `ims/resume_applicationId_${id}.pdf`);
+    try {
+      await deleteObject(storageRef);
+    } catch (error) {
+      console.log('=====delete_object_error', error);
     }
   }
 }
