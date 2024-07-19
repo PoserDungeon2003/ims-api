@@ -10,7 +10,6 @@ import {
 } from '@loopback/rest-explorer';
 import {ServiceMixin} from '@loopback/service-proxy';
 import {FirebaseOptions, initializeApp} from 'firebase/app';
-import multer from 'multer';
 import path from 'path';
 import {AuthorizationComponent, CasbinAuthenticationComponent} from './components/casbin-authorization';
 import {FILE_UPLOAD_SERVICE} from './keys';
@@ -29,16 +28,7 @@ const fireBaseConfig: FirebaseOptions = {
   storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 }
 
-const multerOptions: multer.Options = {
-  storage: multer.diskStorage({
-    // Upload files to `.sandbox`
-    destination: path.join(__dirname, '../.sandbox'),
-    // Use the original file name as is
-    filename: (req, file, cb) => {
-      cb(null, file.originalname);
-    },
-  }),
-};
+
 
 export class ImsApiApplication extends BootMixin(
   ServiceMixin(RepositoryMixin(RestApplication)),
