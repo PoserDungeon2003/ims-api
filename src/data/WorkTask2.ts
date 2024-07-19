@@ -1,5 +1,5 @@
 import {AuthenticationComponent} from '@loopback/authentication';
-import {JWTAuthenticationComponent, SECURITY_SCHEME_SPEC, TokenServiceBindings, UserServiceBindings} from '@loopback/authentication-jwt';
+import {JWTAuthenticationComponent, TokenServiceBindings, UserServiceBindings} from '@loopback/authentication-jwt';
 import {BootMixin} from '@loopback/boot';
 import {ApplicationConfig} from '@loopback/core';
 import {RepositoryMixin} from '@loopback/repository';
@@ -81,21 +81,5 @@ export class ImsApiApplication extends BootMixin(
     };
   }
 
-  addSecuritySpec(): void {
-    this.api({
-      openapi: '3.0.0',
-      info: {
-        title: 'ImsApi',
-        version: require('.././package.json').version,
-      },
-      paths: {},
-      components: {securitySchemes: SECURITY_SCHEME_SPEC},
-      security: [
-        {
-          jwt: [],
-        },
-      ],
-      servers: [{url: '/'}],
-    });
-  }
+
 }
