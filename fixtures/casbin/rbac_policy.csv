@@ -2,6 +2,7 @@ p, Admin, .*, .*
 p, guestRole, users, find|count|login|
 p, guestRole, , index|indexRedirect|spec
 p, guestRole, applications, create
+p, guestRole, jobpositions, find
 g, guest, guestRole
 p, HRManagerRole, interns, .*
 p, HRManagerRole, applications, find|count|findById|updateById|deleteById
