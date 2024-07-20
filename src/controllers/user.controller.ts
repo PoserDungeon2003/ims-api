@@ -1,5 +1,5 @@
 import {authenticate} from '@loopback/authentication';
-import {Credentials, TokenServiceBindings, UserServiceBindings} from '@loopback/authentication-jwt';
+import {Credentials, TokenServiceBindings, User, UserServiceBindings} from '@loopback/authentication-jwt';
 import {inject} from '@loopback/core';
 import {
   Count,
@@ -19,6 +19,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import {SecurityBindings, UserProfile} from '@loopback/security';
 import {CredentialsRequestBody} from '../common/models/request';
 import {LoginRS} from '../common/models/response';
 import {Users} from '../models';
@@ -29,8 +30,25 @@ export class UserController {
     @inject(UserServiceBindings.USER_SERVICE)
     private userService: UserService,
     @inject(TokenServiceBindings.TOKEN_SERVICE)
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    @inject(SecurityBindings.USER, {optional: true})
+    private user: UserProfile,
   ) { }
+
+  @get('me')
+  @authenticate('jwt')
+  @response(200, {
+    description: 'User model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(User),
+      },
+    },
+  })
+  async me(
+  ): Promise<UserProfile> {
+    return this.user!;
+  }
 
   @post('/users')
   @authenticate('jwt')
