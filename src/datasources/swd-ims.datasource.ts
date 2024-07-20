@@ -2,9 +2,9 @@ import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
 
 const config = {
-  name: process.env.DB_NAME || 'swd_ims',
-  connector: process.env.DB_CONNECTOR || 'postgresql',
-  url: process.env.DB_URL || '',
+  name: 'swd_ims',
+  connector: 'postgresql',
+  // url: process.env.DB_URL || '',
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
   user: process.env.DB_USER || 'postgres',
