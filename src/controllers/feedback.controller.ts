@@ -1,11 +1,11 @@
 import {authenticate} from '@loopback/authentication';
+import {service} from '@loopback/core';
 import {
   Count,
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -19,12 +19,12 @@ import {
   response,
 } from '@loopback/rest';
 import {Feedback} from '../models';
-import {FeedbackRepository} from '../repositories';
+import {FeedbackService} from '../services';
 
 export class FeedbackController {
   constructor(
-    @repository(FeedbackRepository)
-    public feedbackRepository: FeedbackRepository,
+    @service(FeedbackService)
+    private feedbackService: FeedbackService,
   ) { }
 
   @post('/feedbacks')
@@ -46,7 +46,7 @@ export class FeedbackController {
     })
     feedback: Omit<Feedback, 'id'>,
   ): Promise<Feedback> {
-    return this.feedbackRepository.create(feedback);
+    return this.feedbackService.create(feedback);
   }
 
   @get('/feedbacks/count')
@@ -58,7 +58,7 @@ export class FeedbackController {
   async count(
     @param.where(Feedback) where?: Where<Feedback>,
   ): Promise<Count> {
-    return this.feedbackRepository.count(where);
+    return this.feedbackService.count(where);
   }
 
   @get('/feedbacks')
@@ -77,7 +77,7 @@ export class FeedbackController {
   async find(
     @param.filter(Feedback) filter?: Filter<Feedback>,
   ): Promise<Feedback[]> {
-    return this.feedbackRepository.find(filter);
+    return this.feedbackService.find(filter);
   }
 
   @patch('/feedbacks')
@@ -97,7 +97,7 @@ export class FeedbackController {
     feedback: Feedback,
     @param.where(Feedback) where?: Where<Feedback>,
   ): Promise<Count> {
-    return this.feedbackRepository.updateAll(feedback, where);
+    return this.feedbackService.updateAll(feedback, where);
   }
 
   @get('/feedbacks/{id}')
@@ -114,7 +114,7 @@ export class FeedbackController {
     @param.path.number('id') id: number,
     @param.filter(Feedback, {exclude: 'where'}) filter?: FilterExcludingWhere<Feedback>
   ): Promise<Feedback> {
-    return this.feedbackRepository.findById(id, filter);
+    return this.feedbackService.findById(id, filter);
   }
 
   @patch('/feedbacks/{id}')
@@ -133,7 +133,7 @@ export class FeedbackController {
     })
     feedback: Feedback,
   ): Promise<void> {
-    await this.feedbackRepository.updateById(id, feedback);
+    await this.feedbackService.updateById(id, feedback);
   }
 
   @put('/feedbacks/{id}')
@@ -145,7 +145,7 @@ export class FeedbackController {
     @param.path.number('id') id: number,
     @requestBody() feedback: Feedback,
   ): Promise<void> {
-    await this.feedbackRepository.replaceById(id, feedback);
+    await this.feedbackService.replaceById(id, feedback);
   }
 
   @del('/feedbacks/{id}')
@@ -154,6 +154,6 @@ export class FeedbackController {
     description: 'Feedback DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.feedbackRepository.deleteById(id);
+    await this.feedbackService.deleteById(id);
   }
 }

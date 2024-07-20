@@ -5,8 +5,7 @@ import {
   CountSchema,
   Filter,
   FilterExcludingWhere,
-  repository,
-  Where,
+  Where
 } from '@loopback/repository';
 import {
   del,
@@ -21,13 +20,10 @@ import {
 } from '@loopback/rest';
 import {CreateInterview} from '../common/models/request';
 import {Interview} from '../models';
-import {InterviewRepository} from '../repositories';
 import {InterviewService} from '../services';
 
 export class InterviewController {
   constructor(
-    @repository(InterviewRepository)
-    public interviewRepository: InterviewRepository,
     @service(InterviewService)
     private interviewService: InterviewService,
   ) { }
@@ -62,7 +58,7 @@ export class InterviewController {
   async count(
     @param.where(Interview) where?: Where<Interview>,
   ): Promise<Count> {
-    return this.interviewRepository.count(where);
+    return this.interviewService.count(where);
   }
 
   @get('/interviews')
@@ -81,7 +77,7 @@ export class InterviewController {
   async find(
     @param.filter(Interview) filter?: Filter<Interview>,
   ): Promise<Interview[]> {
-    return this.interviewRepository.find(filter);
+    return this.interviewService.find(filter);
   }
 
   @patch('/interviews')
@@ -101,7 +97,7 @@ export class InterviewController {
     interview: Interview,
     @param.where(Interview) where?: Where<Interview>,
   ): Promise<Count> {
-    return this.interviewRepository.updateAll(interview, where);
+    return this.interviewService.updateAll(interview, where);
   }
 
   @get('/interviews/{id}')
@@ -118,7 +114,7 @@ export class InterviewController {
     @param.path.number('id') id: number,
     @param.filter(Interview, {exclude: 'where'}) filter?: FilterExcludingWhere<Interview>
   ): Promise<Interview> {
-    return this.interviewRepository.findById(id, filter);
+    return this.interviewService.findById(id, filter);
   }
 
   @patch('/interviews/{id}')
@@ -137,7 +133,7 @@ export class InterviewController {
     })
     interview: Interview,
   ): Promise<void> {
-    await this.interviewRepository.updateById(id, interview);
+    await this.interviewService.updateById(id, interview);
   }
 
   @put('/interviews/{id}')
@@ -149,7 +145,7 @@ export class InterviewController {
     @param.path.number('id') id: number,
     @requestBody() interview: Interview,
   ): Promise<void> {
-    await this.interviewRepository.replaceById(id, interview);
+    await this.interviewService.replaceById(id, interview);
   }
 
   @del('/interviews/{id}')
@@ -158,6 +154,6 @@ export class InterviewController {
     description: 'Interview DELETE success',
   })
   async deleteById(@param.path.number('id') id: number): Promise<void> {
-    await this.interviewRepository.deleteById(id);
+    await this.interviewService.deleteById(id);
   }
 }

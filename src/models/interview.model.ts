@@ -4,6 +4,51 @@ import {Application} from './application.model';
 import {Users} from './users.model';
 
 @model()
+export class Question {
+  @property({
+    type: 'number',
+    id: true,
+    generated: true,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  question: string;
+
+  @property({
+    type: 'array',
+    itemType: 'string',
+    required: true,
+  })
+  options: string[];
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  correct_answer: string;
+}
+
+@model()
+export class Quiz {
+  @property({
+    type: 'string',
+    required: true,
+  })
+  title: string;
+
+  @property({
+    type: 'array',
+    itemType: 'object',
+    required: true,
+  })
+  questions: Question[];
+}
+
+@model()
 export class Interview extends TimeStampMixin(Entity) {
   @property({
     type: 'number',
@@ -36,7 +81,7 @@ export class Interview extends TimeStampMixin(Entity) {
       dataType: 'jsonb',
     }
   })
-  quiz?: object;
+  quiz?: Quiz;
 
   @property({
     type: 'string',

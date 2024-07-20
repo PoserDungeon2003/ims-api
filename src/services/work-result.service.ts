@@ -1,5 +1,5 @@
 import { /* inject, */ BindingScope, injectable} from '@loopback/core';
-import {repository} from '@loopback/repository';
+import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {WorkResult} from '../models';
 import {InternRepository, TrainingProgramRepository, WorkResultRepository} from '../repositories';
 
@@ -30,5 +30,33 @@ export class WorkResultService {
       }
     }
     return this.workResultRepository.create(workResult);
+  }
+
+  async count(where?: Where<WorkResult>): Promise<Count> {
+    return this.workResultRepository.count(where);
+  }
+
+  async find(filter?: Filter<WorkResult>): Promise<WorkResult[]> {
+    return this.workResultRepository.find(filter);
+  }
+
+  async updateAll(workResult: WorkResult, where?: Where<WorkResult>): Promise<Count> {
+    return this.workResultRepository.updateAll(workResult, where);
+  }
+
+  async findById(id: number, filter?: FilterExcludingWhere<WorkResult>): Promise<WorkResult> {
+    return this.workResultRepository.findById(id, filter);
+  }
+
+  async replaceById(id: number, workResult: WorkResult): Promise<void> {
+    await this.workResultRepository.replaceById(id, workResult);
+  }
+
+  async updateById(id: number, workResult: WorkResult): Promise<void> {
+    await this.workResultRepository.updateById(id, workResult);
+  }
+
+  async deleteById(id: number): Promise<void> {
+    await this.workResultRepository.deleteById(id);
   }
 }
