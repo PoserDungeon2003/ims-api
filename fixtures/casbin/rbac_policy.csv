@@ -7,6 +7,7 @@ g, guest, guestRole
 p, HRManagerRole, interns, .*
 p, HRManagerRole, applications, find|count|findById|updateById|deleteById
 p, HRManagerRole, feedbacks, .*
+p, HRManagerRole, jobpositions, .*
 g, HRManager, HRManagerRole
 p, MentorRole, feedbacks, find|count|findById
 p, MentorRole, tasks, .*
