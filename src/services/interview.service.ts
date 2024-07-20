@@ -2,7 +2,7 @@ import { /* inject, */ BindingScope, injectable} from '@loopback/core';
 import {Count, Filter, FilterExcludingWhere, repository, Where} from '@loopback/repository';
 import {HttpErrors} from '@loopback/rest';
 import {CreateInterview} from '../common/models/request';
-import {Interview} from '../models';
+import {Interview, Quiz} from '../models';
 import {InterviewRepository} from '../repositories';
 
 @injectable({scope: BindingScope.TRANSIENT})
@@ -14,10 +14,10 @@ export class InterviewService {
 
   async create(interview: CreateInterview): Promise<Interview> {
     try {
-      let truncatedQuiz = interview.quiz?.replace(/'/g, "");
+      const quiz: Quiz = JSON.parse(interview.quiz ?? "");
       return this.interviewRepository.create({
         ...interview,
-        quiz: JSON.parse(truncatedQuiz ?? ""),
+        quiz: quiz,
       });
     } catch (error) {
       throw HttpErrors[500]("Internal server error")
