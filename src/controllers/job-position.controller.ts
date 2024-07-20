@@ -1,3 +1,4 @@
+import {authenticate} from '@loopback/authentication';
 import {
   Count,
   CountSchema,
@@ -7,13 +8,13 @@ import {
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  param,
   patch,
+  post,
   put,
-  del,
   requestBody,
   response,
 } from '@loopback/rest';
@@ -23,10 +24,11 @@ import {JobPositionRepository} from '../repositories';
 export class JobPositionController {
   constructor(
     @repository(JobPositionRepository)
-    public jobPositionRepository : JobPositionRepository,
-  ) {}
+    public jobPositionRepository: JobPositionRepository,
+  ) { }
 
   @post('/job-positions')
+  @authenticate('jwt')
   @response(200, {
     description: 'JobPosition model instance',
     content: {'application/json': {schema: getModelSchemaRef(JobPosition)}},
@@ -48,6 +50,7 @@ export class JobPositionController {
   }
 
   @get('/job-positions/count')
+  @authenticate('jwt')
   @response(200, {
     description: 'JobPosition model count',
     content: {'application/json': {schema: CountSchema}},
@@ -96,6 +99,7 @@ export class JobPositionController {
   }
 
   @get('/job-positions/{id}')
+  @authenticate('jwt')
   @response(200, {
     description: 'JobPosition model instance',
     content: {
@@ -112,6 +116,7 @@ export class JobPositionController {
   }
 
   @patch('/job-positions/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'JobPosition PATCH success',
   })
@@ -130,6 +135,7 @@ export class JobPositionController {
   }
 
   @put('/job-positions/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'JobPosition PUT success',
   })
@@ -141,6 +147,7 @@ export class JobPositionController {
   }
 
   @del('/job-positions/{id}')
+  @authenticate('jwt')
   @response(204, {
     description: 'JobPosition DELETE success',
   })
